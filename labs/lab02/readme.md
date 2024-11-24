@@ -210,7 +210,112 @@ interface Vlan30
    dhcp server ipv4
    ip ospf area 0.0.0.0
 ```
+## Вывод команд show ip ospf neighbor и show ip ospf database dc1-spine1
+```
+dc1-spine1#show ip ospf neighbor
+Neighbor ID     Instance VRF      Pri State                  Dead Time   Address         Interface
+10.0.0.1        1        default  0   FULL                   00:00:33    10.2.1.1        Ethernet1
+10.0.0.2        1        default  0   FULL                   00:00:34    10.2.1.3        Ethernet2
+10.0.0.3        1        default  0   FULL                   00:00:36    10.2.1.5        Ethernet3
+dc1-spine1#
+dc1-spine1#show ip ospf database
 
+            OSPF Router with ID(10.0.1.0) (Instance ID 1) (VRF default)
+
+
+                 Router Link States (Area 0.0.0.0)
+
+Link ID         ADV Router      Age         Seq#         Checksum Link count
+10.0.0.1        10.0.0.1        820         0x80000011   0x3fdd   6
+10.0.2.0        10.0.2.0        412         0x8000000b   0xf5ec   7
+10.0.0.2        10.0.0.2        485         0x8000000b   0xab6b   6
+10.0.0.3        10.0.0.3        96          0x8000000a   0xefd    6
+10.0.1.0        10.0.1.0        436         0x80000012   0x875d   7
+```
+## Вывод команды show ip ospf neighbor и show ip ospf database dc1-spine1
+```
+dc1-spine1#show ip route ospf
+
+VRF: default
+Codes: C - connected, S - static, K - kernel,
+       O - OSPF, IA - OSPF inter area, E1 - OSPF external type 1,
+       E2 - OSPF external type 2, N1 - OSPF NSSA external type 1,
+       N2 - OSPF NSSA external type2, B - Other BGP Routes,
+       B I - iBGP, B E - eBGP, R - RIP, I L1 - IS-IS level 1,
+       I L2 - IS-IS level 2, O3 - OSPFv3, A B - BGP Aggregate,
+       A O - OSPF Summary, NG - Nexthop Group Static Route,
+       V - VXLAN Control Service, M - Martian,
+       DH - DHCP client installed default route,
+       DP - Dynamic Policy Route, L - VRF Leaked,
+       G  - gRIBI, RC - Route Cache Route
+
+ O        10.0.0.1/32 [110/20] via 10.2.1.1, Ethernet1
+ O        10.0.0.2/32 [110/20] via 10.2.1.3, Ethernet2
+ O        10.0.0.3/32 [110/20] via 10.2.1.5, Ethernet3
+ O        10.0.2.0/32 [110/30] via 10.2.1.1, Ethernet1
+                               via 10.2.1.3, Ethernet2
+                               via 10.2.1.5, Ethernet3
+ O        10.2.2.0/31 [110/20] via 10.2.1.1, Ethernet1
+ O        10.2.2.2/31 [110/20] via 10.2.1.3, Ethernet2
+ O        10.2.2.4/31 [110/20] via 10.2.1.5, Ethernet3
+ O        10.4.1.0/24 [110/20] via 10.2.1.1, Ethernet1
+ O        10.4.2.0/24 [110/20] via 10.2.1.3, Ethernet2
+ O        10.4.3.0/24 [110/20] via 10.2.1.5, Ethernet3
+```
+
+## Вывод команд show ip ospf neighbor и show ip ospf database dc1-leaf3
+```
+dc1-leaf3#show ip ospf neighbor
+Neighbor ID     Instance VRF      Pri State                  Dead Time   Address         Interface
+10.0.1.0        1        default  0   FULL                   00:00:33    10.2.1.4        Ethernet1
+10.0.2.0        1        default  0   FULL                   00:00:34    10.2.2.4        Ethernet2
+dc1-leaf3#show ip ospf database
+
+            OSPF Router with ID(10.0.0.3) (Instance ID 1) (VRF default)
+
+
+                 Router Link States (Area 0.0.0.0)
+
+Link ID         ADV Router      Age         Seq#         Checksum Link count
+10.0.1.0        10.0.1.0        491         0x80000012   0x875d   7
+10.0.2.0        10.0.2.0        466         0x8000000b   0xf5ec   7
+10.0.0.2        10.0.0.2        540         0x8000000b   0xab6b   6
+10.0.0.1        10.0.0.1        876         0x80000011   0x3fdd   6
+10.0.0.3        10.0.0.3        150         0x8000000a   0xefd    6
+```
+
+## Вывод команды show ip ospf neighbor и show ip ospf database dc1-leaf3
+```
+dc1-leaf3#show ip route ospf
+
+VRF: default
+Codes: C - connected, S - static, K - kernel,
+       O - OSPF, IA - OSPF inter area, E1 - OSPF external type 1,
+       E2 - OSPF external type 2, N1 - OSPF NSSA external type 1,
+       N2 - OSPF NSSA external type2, B - Other BGP Routes,
+       B I - iBGP, B E - eBGP, R - RIP, I L1 - IS-IS level 1,
+       I L2 - IS-IS level 2, O3 - OSPFv3, A B - BGP Aggregate,
+       A O - OSPF Summary, NG - Nexthop Group Static Route,
+       V - VXLAN Control Service, M - Martian,
+       DH - DHCP client installed default route,
+       DP - Dynamic Policy Route, L - VRF Leaked,
+       G  - gRIBI, RC - Route Cache Route
+
+ O        10.0.0.1/32 [110/30] via 10.2.1.4, Ethernet1
+                               via 10.2.2.4, Ethernet2
+ O        10.0.0.2/32 [110/30] via 10.2.1.4, Ethernet1
+                               via 10.2.2.4, Ethernet2
+ O        10.0.1.0/32 [110/20] via 10.2.1.4, Ethernet1
+ O        10.0.2.0/32 [110/20] via 10.2.2.4, Ethernet2
+ O        10.2.1.0/31 [110/20] via 10.2.1.4, Ethernet1
+ O        10.2.1.2/31 [110/20] via 10.2.1.4, Ethernet1
+ O        10.2.2.0/31 [110/20] via 10.2.2.4, Ethernet2
+ O        10.2.2.2/31 [110/20] via 10.2.2.4, Ethernet2
+ O        10.4.1.0/24 [110/30] via 10.2.1.4, Ethernet1
+                               via 10.2.2.4, Ethernet2
+ O        10.4.2.0/24 [110/30] via 10.2.1.4, Ethernet1
+                               via 10.2.2.4, Ethernet2
+```
 
 
 
