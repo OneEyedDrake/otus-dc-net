@@ -46,8 +46,8 @@ X – значение по порядку,
 
 ### **Итоговая схема с адресацией**
 
----
-
 ![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab01/scheme.png)
 ---
+
+### **Реализация схемы в виртуальной лаборатории *EVE NG***
 
