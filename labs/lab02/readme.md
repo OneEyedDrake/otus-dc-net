@@ -357,7 +357,7 @@ VPCS> ping 10.4.1.2
 ^C
 
 ```
-## dc-spine1 to host1,2,3 и loopback 1 (leaf1,spine2)
+## dc1-spine1 to host1,2,3 и loopback 1 (leaf1,spine2)
 ```
 dc1-spine1#ping 10.4.1.2
 PING 10.4.1.2 (10.4.1.2) 72(100) bytes of data.
