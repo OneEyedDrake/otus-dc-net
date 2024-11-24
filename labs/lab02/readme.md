@@ -317,5 +317,102 @@ Codes: C - connected, S - static, K - kernel,
                                via 10.2.2.4, Ethernet2
 ```
 
+### **Проверка доcтупности узлов**
+---
+## host3 to loopback1 dc1-spine1, spine2, leaf1, leaf2, host 1
+```
+VPCS> ping 10.0.1.0
 
+84 bytes from 10.0.1.0 icmp_seq=1 ttl=63 time=21.370 ms
+84 bytes from 10.0.1.0 icmp_seq=2 ttl=63 time=16.367 ms
+84 bytes from 10.0.1.0 icmp_seq=3 ttl=63 time=18.376 ms
+84 bytes from 10.0.1.0 icmp_seq=4 ttl=63 time=16.744 ms
+^C
+VPCS> ping 10.0.2.0
 
+84 bytes from 10.0.2.0 icmp_seq=1 ttl=63 time=17.696 ms
+84 bytes from 10.0.2.0 icmp_seq=2 ttl=63 time=17.297 ms
+84 bytes from 10.0.2.0 icmp_seq=3 ttl=63 time=16.024 ms
+84 bytes from 10.0.2.0 icmp_seq=4 ttl=63 time=16.977 ms
+^C
+VPCS> ping 10.0.0.1
+
+84 bytes from 10.0.0.1 icmp_seq=1 ttl=62 time=27.207 ms
+84 bytes from 10.0.0.1 icmp_seq=2 ttl=62 time=44.234 ms
+84 bytes from 10.0.0.1 icmp_seq=3 ttl=62 time=25.547 ms
+^C
+VPCS> ping 10.0.0.2
+
+84 bytes from 10.0.0.2 icmp_seq=1 ttl=62 time=27.058 ms
+84 bytes from 10.0.0.2 icmp_seq=2 ttl=62 time=28.238 ms
+84 bytes from 10.0.0.2 icmp_seq=3 ttl=62 time=39.399 ms
+84 bytes from 10.0.0.2 icmp_seq=4 ttl=62 time=28.071 ms
+
+VPCS> ping 10.4.1.2
+
+84 bytes from 10.4.1.2 icmp_seq=1 ttl=61 time=58.593 ms
+84 bytes from 10.4.1.2 icmp_seq=2 ttl=61 time=32.760 ms
+84 bytes from 10.4.1.2 icmp_seq=3 ttl=61 time=33.329 ms
+84 bytes from 10.4.1.2 icmp_seq=4 ttl=61 time=36.893 ms
+^C
+
+```
+## dc-spine1 to host1,2,3 и loopback 1 (leaf1,spine2)
+```
+dc1-spine1#ping 10.4.1.2
+PING 10.4.1.2 (10.4.1.2) 72(100) bytes of data.
+80 bytes from 10.4.1.2: icmp_seq=1 ttl=63 time=23.9 ms
+80 bytes from 10.4.1.2: icmp_seq=2 ttl=63 time=21.5 ms
+80 bytes from 10.4.1.2: icmp_seq=3 ttl=63 time=20.6 ms
+80 bytes from 10.4.1.2: icmp_seq=4 ttl=63 time=16.0 ms
+80 bytes from 10.4.1.2: icmp_seq=5 ttl=63 time=17.8 ms
+
+--- 10.4.1.2 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 83ms
+rtt min/avg/max/mdev = 16.051/20.011/23.953/2.780 ms, pipe 2, ipg/ewma 20.834/21.809 ms
+dc1-spine1#ping 10.4.2.2
+PING 10.4.2.2 (10.4.2.2) 72(100) bytes of data.
+80 bytes from 10.4.2.2: icmp_seq=1 ttl=63 time=73.3 ms
+80 bytes from 10.4.2.2: icmp_seq=2 ttl=63 time=69.4 ms
+80 bytes from 10.4.2.2: icmp_seq=3 ttl=63 time=64.0 ms
+80 bytes from 10.4.2.2: icmp_seq=4 ttl=63 time=57.0 ms
+80 bytes from 10.4.2.2: icmp_seq=5 ttl=63 time=51.9 ms
+
+--- 10.4.2.2 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 45ms
+rtt min/avg/max/mdev = 51.901/63.153/73.302/7.834 ms, pipe 5, ipg/ewma 11.493/67.643 ms
+dc1-spine1#ping 10.4.3.2
+PING 10.4.3.2 (10.4.3.2) 72(100) bytes of data.
+80 bytes from 10.4.3.2: icmp_seq=1 ttl=63 time=38.3 ms
+80 bytes from 10.4.3.2: icmp_seq=2 ttl=63 time=26.1 ms
+80 bytes from 10.4.3.2: icmp_seq=3 ttl=63 time=21.3 ms
+80 bytes from 10.4.3.2: icmp_seq=4 ttl=63 time=14.5 ms
+80 bytes from 10.4.3.2: icmp_seq=5 ttl=63 time=16.9 ms
+
+--- 10.4.3.2 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 99ms
+rtt min/avg/max/mdev = 14.543/23.477/38.326/8.420 ms, pipe 3, ipg/ewma 24.834/30.415 ms
+dc1-spine1#ping 10.0.0.1
+PING 10.0.0.1 (10.0.0.1) 72(100) bytes of data.
+80 bytes from 10.0.0.1: icmp_seq=1 ttl=64 time=10.6 ms
+80 bytes from 10.0.0.1: icmp_seq=2 ttl=64 time=12.1 ms
+80 bytes from 10.0.0.1: icmp_seq=3 ttl=64 time=12.0 ms
+80 bytes from 10.0.0.1: icmp_seq=4 ttl=64 time=9.07 ms
+80 bytes from 10.0.0.1: icmp_seq=5 ttl=64 time=10.9 ms
+
+--- 10.0.0.1 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 46ms
+rtt min/avg/max/mdev = 9.078/10.979/12.177/1.118 ms, pipe 2, ipg/ewma 11.684/10.798 ms
+dc1-spine1#ping 10.0.2.0
+PING 10.0.2.0 (10.0.2.0) 72(100) bytes of data.
+80 bytes from 10.0.2.0: icmp_seq=1 ttl=63 time=23.8 ms
+80 bytes from 10.0.2.0: icmp_seq=2 ttl=63 time=17.9 ms
+80 bytes from 10.0.2.0: icmp_seq=3 ttl=63 time=25.8 ms
+80 bytes from 10.0.2.0: icmp_seq=4 ttl=63 time=23.7 ms
+80 bytes from 10.0.2.0: icmp_seq=5 ttl=63 time=30.4 ms
+
+--- 10.0.2.0 ping statistics ---
+5 packets transmitted, 5 received, 0% packet loss, time 74ms
+rtt min/avg/max/mdev = 17.941/24.353/30.411/4.018 ms, pipe 3, ipg/ewma 18.651/24.345 ms
+dc1-spine1#
+```
