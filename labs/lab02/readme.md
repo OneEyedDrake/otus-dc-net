@@ -21,4 +21,21 @@
 11. Проверить командой show ip ospf database базу данных состояни каналов, должны быть LSA только 1го типа, т.к. все маршрутизаторы находятся в зоне 0.0.0.0 и все линки в режиме network point-to-point.
 12. Проверить доступность командой ping с разных устройств.
 
+**Таблица 1 Loopback интерфейсов**
   
+![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab02/addres%20loopback.png)
+
+**Таблица 2 *IP адресов* ptp интерейсов leaf и spine**
+
+![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab02/ptp%20network.png)
+
+**Таблица 3 подсетей хостовых машин**
+
+![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab02/host-network.png)
+
+### **Cхема с адресацией и указанием зоны OSPF**
+
+![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab02/draw.io.png)
+
+### **Cхема eve-ng стенда**
+![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab02/eve-ng-scheme.png)
