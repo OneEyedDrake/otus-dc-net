@@ -39,3 +39,178 @@
 
 ### **Cхема eve-ng стенда**
 ![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab02/eve-ng-scheme.png)
+
+## Конфигурация OSPF dc1-spine1
+
+```
+router ospf 1
+   router-id 10.0.1.0
+   passive-interface default
+   no passive-interface Ethernet1
+   no passive-interface Ethernet2
+   no passive-interface Ethernet3
+   max-lsa 12000
+
+interface Ethernet1
+   description to_dc1-leaf1
+   no switchport
+   ip address 10.2.1.0/31
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.0
+!
+interface Ethernet2
+   description to_dc1-leaf2
+   no switchport
+   ip address 10.2.1.2/31
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.0
+!
+interface Ethernet3
+   description to_dc1-leaf3
+   no switchport
+   ip address 10.2.1.4/31
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.0
+!
+interface Loopback1
+   ip address 10.0.1.0/32
+   ip ospf area 0.0.0.0
+```
+
+## Конфигурация OSPF dc1-spine2
+
+```
+router ospf 1
+   router-id 10.0.2.0
+   passive-interface default
+   no passive-interface Ethernet1
+   no passive-interface Ethernet2
+   no passive-interface Ethernet3
+   max-lsa 12000
+interface Ethernet1
+   description to_dc1-leaf1
+   no switchport
+   ip address 10.2.2.0/31
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.0
+!
+interface Ethernet2
+   description to_dc1-leaf2
+   no switchport
+   ip address 10.2.2.2/31
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.0
+!
+interface Ethernet3
+   description to_dc1-leaf3
+   no switchport
+   ip address 10.2.2.4/31
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.0
+!
+interface Loopback1
+   ip address 10.0.2.0/32
+   ip ospf area 0.0.0.0
+```
+## Конфигурация OSPF dc1-leaf1
+```
+router ospf 1
+   router-id 10.0.0.1
+   passive-interface default
+   no passive-interface Ethernet1
+   no passive-interface Ethernet2
+   max-lsa 12000
+!
+interface Ethernet1
+   description to_dc1-spine1
+   no switchport
+   ip address 10.2.1.1/31
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.0
+!
+interface Ethernet2
+   description to_dc1-spine2
+   no switchport
+   ip address 10.2.2.1/31
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.0
+!
+!
+interface Loopback1
+   ip address 10.0.0.1/32
+   ip ospf area 0.0.0.0
+!
+interface Vlan10
+   ip address 10.4.1.1/24
+   dhcp server ipv4
+   ip ospf area 0.0.0.0
+```
+## Конфигурация OSPF dc1-leaf2
+```
+router ospf 1
+   router-id 10.0.0.2
+   passive-interface default
+   no passive-interface Ethernet1
+   no passive-interface Ethernet2
+   max-lsa 12000
+!
+interface Ethernet1
+   description to_dc1-spine1
+   no switchport
+   ip address 10.2.1.3/31
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.0
+!
+interface Ethernet2
+   description to_dc1-spine2
+   no switchport
+   ip address 10.2.2.3/31
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.0
+!
+interface Loopback1
+   ip address 10.0.0.2/32
+   ip ospf area 0.0.0.0
+!
+interface Vlan20
+   description esxi-host
+   ip address 10.4.2.1/24
+   dhcp server ipv4
+   ip ospf area 0.0.0.0
+```
+## Конфигурация OSPF dc1-leaf3
+```
+router ospf 1
+   router-id 10.0.0.3
+   passive-interface default
+   no passive-interface Ethernet1
+   no passive-interface Ethernet2
+   max-lsa 12000
+interface Ethernet1
+   description to_dc1-spine1
+   no switchport
+   ip address 10.2.1.5/31
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.0
+!
+interface Ethernet2
+   description to_dc1-spine2
+   no switchport
+   ip address 10.2.2.5/31
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.0
+!
+interface Loopback1
+   ip address 10.0.0.3/32
+   ip ospf area 0.0.0.0
+!
+interface Vlan30
+   description esxi-host
+   ip address 10.4.3.1/24
+   dhcp server ipv4
+   ip ospf area 0.0.0.0
+```
+
+
+
+
