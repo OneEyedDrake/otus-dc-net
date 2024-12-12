@@ -61,4 +61,221 @@ neighbor dc1 peer group
 ### **Cхема eve-ng стенда**
 ![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab02/eve-ng-scheme.png)
 
-## Конфигурация OSPF dc1-spine1
+
+
+## Конфигурация BGP dc1-spine1
+
+```
+router bgp 65000
+   router-id 10.0.1.0
+   bgp listen range 10.2.0.0/16 peer-group dc1 remote-as 65000
+   neighbor dc1 peer group
+   neighbor dc1 remote-as 65000
+   neighbor dc1 next-hop-self
+   neighbor dc1 route-reflector-client
+   neighbor dc1 timers 3 9
+   neighbor dc1 password 7 vYrGBbkC/fzfCBVXbtDK4w==
+   redistribute connected route-map redistrib_connect
+
+
+interface Ethernet1
+   description to_dc1-leaf1
+   no switchport
+   ip address 10.2.1.0/31
+!
+interface Ethernet2
+   description to_dc1-leaf2
+   no switchport
+   ip address 10.2.1.2/31
+!
+interface Ethernet3
+   description to_dc1-leaf3
+   no switchport
+   ip address 10.2.1.4/31
+!
+interface Loopback1
+   ip address 10.0.1.0/32
+!
+interface Management1
+!
+ip routing
+!
+route-map redistrib_connect permit 10
+   match interface Loopback1
+```
+
+## Конфигурация BGP dc1-spine2
+
+```
+router bgp 65000
+   router-id 10.0.2.0
+   bgp listen range 10.2.0.0/16 peer-group dc1 remote-as 65000
+   neighbor dc1 peer group
+   neighbor dc1 remote-as 65000
+   neighbor dc1 next-hop-self
+   neighbor dc1 route-reflector-client
+   neighbor dc1 timers 3 9
+   neighbor dc1 password 7 vYrGBbkC/fzfCBVXbtDK4w==
+   redistribute connected route-map redistrib_connect
+
+interface Ethernet1
+   description to_dc1-leaf1
+   no switchport
+   ip address 10.2.2.0/31
+!
+interface Ethernet2
+   description to_dc1-leaf2
+   no switchport
+   ip address 10.2.2.2/31
+!
+interface Ethernet3
+   description to_dc1-leaf3
+   no switchport
+   ip address 10.2.2.4/31
+!
+
+interface Loopback1
+   ip address 10.0.2.0/32
+!
+interface Management1
+!
+ip routing
+!
+route-map redistrib_connect permit 10
+   match interface Loopback1
+
+```
+## Конфигурация BGP dc1-leaf1
+```
+router bgp 65000
+   router-id 10.0.0.1
+   maximum-paths 2
+   neighbor dc1 peer group
+   neighbor dc1 remote-as 65000
+   neighbor dc1 timers 3 9
+   neighbor dc1 password 7 vYrGBbkC/fzfCBVXbtDK4w==
+   neighbor 10.2.1.0 peer group dc1
+   neighbor 10.2.2.0 peer group dc1
+   network 10.4.1.0/24
+   redistribute connected route-map redistrib_connect
+!
+interface Ethernet1
+   description to_dc1-spine1
+   no switchport
+   ip address 10.2.1.1/31
+!
+interface Ethernet2
+   description to_dc1-spine2
+   no switchport
+   ip address 10.2.2.1/31
+
+interface Ethernet8
+   switchport access vlan 10
+!
+interface Loopback1
+   ip address 10.0.0.1/32
+!
+interface Management1
+!
+interface Vlan10
+   ip address 10.4.1.1/24
+   dhcp server ipv4
+   ip ospf area 0.0.0.0
+!
+ip routing
+!
+route-map redistrib_connect permit 10
+   match interface Loopback1
+
+```
+## Конфигурация BGP dc1-leaf2
+```
+router bgp 65000
+   router-id 10.0.0.2
+   maximum-paths 2
+   neighbor dc1 peer group
+   neighbor dc1 remote-as 65000
+   neighbor dc1 timers 3 9
+   neighbor dc1 password 7 vYrGBbkC/fzfCBVXbtDK4w==
+   neighbor 10.2.1.2 peer group dc1
+   neighbor 10.2.2.2 peer group dc1
+   network 10.4.2.0/24
+   redistribute connected route-map redistrib_connect
+
+!
+interface Ethernet1
+   description to_dc1-spine1
+   no switchport
+   ip address 10.2.1.3/31
+!
+interface Ethernet2
+   description to_dc1-spine2
+   no switchport
+   ip address 10.2.2.3/31
+!
+interface Ethernet8
+   switchport access vlan 20
+!
+interface Loopback1
+   ip address 10.0.0.2/32
+!
+interface Management1
+!
+interface Vlan20
+   description esxi-host
+   ip address 10.4.2.1/24
+   dhcp server ipv4
+   ip ospf area 0.0.0.0
+!
+ip routing
+!
+route-map redistrib_connect permit 10
+   match interface Loopback1
+
+```
+## Конфигурация BGP dc1-leaf3
+```
+router bgp 65000
+   router-id 10.0.0.3
+   maximum-paths 2
+   neighbor dc1 peer group
+   neighbor dc1 remote-as 65000
+   neighbor dc1 timers 3 9
+   neighbor dc1 password 7 vYrGBbkC/fzfCBVXbtDK4w==
+   neighbor 10.2.1.4 peer group dc1
+   neighbor 10.2.2.4 peer group dc1
+   network 10.4.3.0/24
+   redistribute connected route-map redistrib_connect
+!
+interface Ethernet1
+   description to_dc1-spine1
+   no switchport
+   ip address 10.2.1.5/31
+!
+interface Ethernet2
+   description to_dc1-spine2
+   no switchport
+   ip address 10.2.2.5/31
+!
+interface Ethernet7
+   switchport access vlan 30
+!
+interface Ethernet8
+   switchport access vlan 30
+!
+interface Loopback1
+   ip address 10.0.0.3/32
+!
+interface Management1
+!
+interface Vlan30
+   description esxi-host
+   ip address 10.4.3.1/24
+   dhcp server ipv4
+   ip ospf area 0.0.0.0
+!
+ip routing
+!
+route-map redistrib_connect permit 10
+   match interface Loopback1
+```
