@@ -16,18 +16,28 @@
 9. Зададим таймеры *Keepalive Timer* и *Hold* neighbor dc1 **timers 3 9**
 10. Зададим пароль который будет использован для поднятия сессии с соседом neighbor dc1 **password 7 arista**
 11.Для избежания петель в **IBGP** используется связанность *Full Mesh*, т.к. при передаче маршрута внутри автономной системы AS-path не меняется. Но так как у нас не *Full Mesh*, для решения данный проблемы поможет включение функционала Route Reflector **neighbor dc1 route-reflector-client**, все полученные маршруты будут переданы на все остальные маршрутизаторы в сехеме.
-В IBGP чтоб соседи поместили маршрут в таблицу маршрутизации необходимо чтобы у получателя такого анонса был маршрут до Next-Hop, сделать это можно командой **neighbor dc1 next-hop-self**
-Настроим автоматическое обнаружение соседсва в соотвествии с префиксом подсети и настроек *peer group dc1* **bgp listen range 10.2.0.0/16 peer-group dc1 remote-as 65000**
-Анансируем адрес Loopback1 в в таблицу маршрутизаци;
-**Настрока spine завершена!**
-На Leaf сделаем настройки peer group аналогичные **Spine**
+12. В IBGP чтоб соседи поместили маршрут в таблицу маршрутизации необходимо чтобы у получателя такого анонса был маршрут до Next-Hop, сделать это можно командой **neighbor dc1 next-hop-self**
+13. Настроим автоматическое обнаружение соседсва в соотвествии с префиксом подсети и настроек *peer group dc1* **bgp listen range 10.2.0.0/16 peer-group dc1 remote-as 65000**
+14. Анонсируем адрес Loopback1 в в таблицу маршрутизаци **redistribute connected route-map redistrib_connect**;
+15. **Настрока spine завершена!**
+
+На Leaf:
+1. Включить процесс **BGP**
+2. Выполнить команду router-id *адрес loopback1*;
+3. Cделаем настройки peer group аналогичные **Spine**
 ```
 neighbor dc1 peer group
    neighbor dc1 remote-as 65000
    neighbor dc1 timers 3 9
    neighbor dc1 password 7
 ```
-
+4. В явном виде укажем в конфигурации соседей **Spine**
+```
+    neighbor 10.2.1.0 peer group dc1
+    neighbor 10.2.2.0 peer group dc1
+```
+5. Анонсируем connected сети командой network
+6. Анонсируем адрес Loopback1 в в таблицу маршрутизаци **redistribute connected route-map redistrib_connect**
  
 
 
