@@ -37,8 +37,9 @@ neighbor dc1 peer group
     neighbor 10.2.2.0 peer group dc1
 ```
 5. Анонсируем connected сети командой network
-6. Анонсируем адрес Loopback1 в в таблицу маршрутизаци **redistribute connected route-map redistrib_connect**
- 
+6. Для настройки ECMP используем команду **maximum-paths 2**. Т.к. по умолчанию BGP заносит в таблицу маршрутизации только лучший маршрут. Значение 2, т.к. на схеме 2 Spine.
+7. Анонсируем адрес Loopback1 в в таблицу маршрутизаци **redistribute connected route-map redistrib_connect**
+Проверим таблицы маршрутизации (они должны содержать все анонсированные connected сети и адрес loopback1, каждого устройства.  
 
 
 **Таблица 1 Loopback интерфейсов**
