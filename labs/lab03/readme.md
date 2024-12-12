@@ -827,3 +827,101 @@ TCP Socket Information:
     Advertised Recv Window (rcv_space): 14600
 ```
 
+### **Проверка доcтупности узлов**
+---
+## host3 to loopback1 dc1-spine1, spine2, leaf1, leaf2, host 1,2
+```
+VPCS> ping 10.0.1.0
+
+84 bytes from 10.0.1.0 icmp_seq=1 ttl=63 time=21.370 ms
+84 bytes from 10.0.1.0 icmp_seq=2 ttl=63 time=16.367 ms
+84 bytes from 10.0.1.0 icmp_seq=3 ttl=63 time=18.376 ms
+84 bytes from 10.0.1.0 icmp_seq=4 ttl=63 time=16.744 ms
+^C
+VPCS> ping 10.0.2.0
+
+84 bytes from 10.0.2.0 icmp_seq=1 ttl=63 time=17.696 ms
+84 bytes from 10.0.2.0 icmp_seq=2 ttl=63 time=17.297 ms
+84 bytes from 10.0.2.0 icmp_seq=3 ttl=63 time=16.024 ms
+84 bytes from 10.0.2.0 icmp_seq=4 ttl=63 time=16.977 ms
+^C
+VPCS> ping 10.0.0.1
+
+84 bytes from 10.0.0.1 icmp_seq=1 ttl=62 time=27.207 ms
+84 bytes from 10.0.0.1 icmp_seq=2 ttl=62 time=44.234 ms
+84 bytes from 10.0.0.1 icmp_seq=3 ttl=62 time=25.547 ms
+^C
+VPCS> ping 10.0.0.2
+
+84 bytes from 10.0.0.2 icmp_seq=1 ttl=62 time=27.058 ms
+84 bytes from 10.0.0.2 icmp_seq=2 ttl=62 time=28.238 ms
+84 bytes from 10.0.0.2 icmp_seq=3 ttl=62 time=39.399 ms
+84 bytes from 10.0.0.2 icmp_seq=4 ttl=62 time=28.071 ms
+
+VPCS> ping 10.4.1.2
+
+84 bytes from 10.4.1.2 icmp_seq=1 ttl=61 time=58.593 ms
+84 bytes from 10.4.1.2 icmp_seq=2 ttl=61 time=32.760 ms
+84 bytes from 10.4.1.2 icmp_seq=3 ttl=61 time=33.329 ms
+84 bytes from 10.4.1.2 icmp_seq=4 ttl=61 time=36.893 ms
+
+VPCS> ping 10.4.2.2
+
+84 bytes from 10.4.2.2 icmp_seq=1 ttl=61 time=72.740 ms
+84 bytes from 10.4.2.2 icmp_seq=2 ttl=61 time=32.113 ms
+84 bytes from 10.4.2.2 icmp_seq=3 ttl=61 time=30.890 ms
+84 bytes from 10.4.2.2 icmp_seq=4 ttl=61 time=32.290 ms
+84 bytes from 10.4.2.2 icmp_seq=5 ttl=61 time=30.585 ms
+
+```
+## dc1-spine1 to host1,2,3 и loopback 1 (leaf1,2,3)
+```
+dc1-spine1#ping 10.4.1.2 source loopback 1
+PING 10.4.1.2 (10.4.1.2) from 10.0.1.0 : 72(100) bytes of data.
+80 bytes from 10.4.1.2: icmp_seq=1 ttl=63 time=24.3 ms
+80 bytes from 10.4.1.2: icmp_seq=2 ttl=63 time=19.0 ms
+80 bytes from 10.4.1.2: icmp_seq=3 ttl=63 time=15.1 ms
+80 bytes from 10.4.1.2: icmp_seq=4 ttl=63 time=12.4 ms
+80 bytes from 10.4.1.2: icmp_seq=5 ttl=63 time=17.0 ms
+
+dc1-spine1#ping 10.4.2.2 source loopback 1
+PING 10.4.2.2 (10.4.2.2) from 10.0.1.0 : 72(100) bytes of data.
+80 bytes from 10.4.2.2: icmp_seq=1 ttl=63 time=46.3 ms
+80 bytes from 10.4.2.2: icmp_seq=2 ttl=63 time=40.7 ms
+80 bytes from 10.4.2.2: icmp_seq=3 ttl=63 time=36.3 ms
+80 bytes from 10.4.2.2: icmp_seq=4 ttl=63 time=30.8 ms
+80 bytes from 10.4.2.2: icmp_seq=5 ttl=63 time=13.5 ms
+
+dc1-spine1#ping 10.4.3.2 source loopback 1
+PING 10.4.3.2 (10.4.3.2) from 10.0.1.0 : 72(100) bytes of data.
+80 bytes from 10.4.3.2: icmp_seq=1 ttl=63 time=35.0 ms
+80 bytes from 10.4.3.2: icmp_seq=2 ttl=63 time=30.0 ms
+80 bytes from 10.4.3.2: icmp_seq=3 ttl=63 time=26.2 ms
+80 bytes from 10.4.3.2: icmp_seq=4 ttl=63 time=27.2 ms
+80 bytes from 10.4.3.2: icmp_seq=5 ttl=63 time=20.4 ms
+
+dc1-spine1#ping 10.0.0.1 source loopback 1
+PING 10.0.0.1 (10.0.0.1) from 10.0.1.0 : 72(100) bytes of data.
+80 bytes from 10.0.0.1: icmp_seq=1 ttl=64 time=24.2 ms
+80 bytes from 10.0.0.1: icmp_seq=2 ttl=64 time=16.2 ms
+80 bytes from 10.0.0.1: icmp_seq=3 ttl=64 time=13.5 ms
+80 bytes from 10.0.0.1: icmp_seq=4 ttl=64 time=9.98 ms
+80 bytes from 10.0.0.1: icmp_seq=5 ttl=64 time=7.06 ms
+
+dc1-spine1#ping 10.0.0.2 source loopback 1
+PING 10.0.0.2 (10.0.0.2) from 10.0.1.0 : 72(100) bytes of data.
+80 bytes from 10.0.0.2: icmp_seq=1 ttl=64 time=11.3 ms
+80 bytes from 10.0.0.2: icmp_seq=2 ttl=64 time=12.1 ms
+80 bytes from 10.0.0.2: icmp_seq=3 ttl=64 time=10.4 ms
+80 bytes from 10.0.0.2: icmp_seq=4 ttl=64 time=13.1 ms
+80 bytes from 10.0.0.2: icmp_seq=5 ttl=64 time=9.32 ms
+
+dc1-spine1#ping 10.0.0.3 source loopback 1
+PING 10.0.0.3 (10.0.0.3) from 10.0.1.0 : 72(100) bytes of data.
+80 bytes from 10.0.0.3: icmp_seq=1 ttl=64 time=11.8 ms
+80 bytes from 10.0.0.3: icmp_seq=2 ttl=64 time=10.7 ms
+80 bytes from 10.0.0.3: icmp_seq=3 ttl=64 time=9.50 ms
+80 bytes from 10.0.0.3: icmp_seq=4 ttl=64 time=10.1 ms
+80 bytes from 10.0.0.3: icmp_seq=5 ttl=64 time=12.5 ms
+
+```
