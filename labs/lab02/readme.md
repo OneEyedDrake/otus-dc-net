@@ -364,7 +364,7 @@ VPCS> ping 10.4.2.2
 84 bytes from 10.4.2.2 icmp_seq=5 ttl=61 time=30.585 ms
 
 ```
-## dc1-spine1 to host1,2,3 и loopback 1 (leaf1,)
+## dc1-spine1 to host1,2,3 и loopback 1 (leaf1)
 ```
 dc1-spine1#ping 10.4.1.2 source loopback 1
 PING 10.4.1.2 (10.4.1.2) from 10.0.1.0 : 72(100) bytes of data.
