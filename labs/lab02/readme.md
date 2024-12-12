@@ -319,7 +319,7 @@ Codes: C - connected, S - static, K - kernel,
 
 ### **Проверка доcтупности узлов**
 ---
-## host3 to loopback1 dc1-spine1, spine2, leaf1, leaf2, host 1
+## host3 to loopback1 dc1-spine1, spine2, leaf1, leaf2, host 1,2
 ```
 VPCS> ping 10.0.1.0
 
@@ -354,56 +354,50 @@ VPCS> ping 10.4.1.2
 84 bytes from 10.4.1.2 icmp_seq=2 ttl=61 time=32.760 ms
 84 bytes from 10.4.1.2 icmp_seq=3 ttl=61 time=33.329 ms
 84 bytes from 10.4.1.2 icmp_seq=4 ttl=61 time=36.893 ms
-^C
+
+VPCS> ping 10.4.2.2
+
+84 bytes from 10.4.2.2 icmp_seq=1 ttl=61 time=72.740 ms
+84 bytes from 10.4.2.2 icmp_seq=2 ttl=61 time=32.113 ms
+84 bytes from 10.4.2.2 icmp_seq=3 ttl=61 time=30.890 ms
+84 bytes from 10.4.2.2 icmp_seq=4 ttl=61 time=32.290 ms
+84 bytes from 10.4.2.2 icmp_seq=5 ttl=61 time=30.585 ms
 
 ```
 ## dc1-spine1 to host1,2,3 и loopback 1 (leaf1,spine2)
 ```
-dc1-spine1#ping 10.4.1.2
-PING 10.4.1.2 (10.4.1.2) 72(100) bytes of data.
-80 bytes from 10.4.1.2: icmp_seq=1 ttl=63 time=23.9 ms
-80 bytes from 10.4.1.2: icmp_seq=2 ttl=63 time=21.5 ms
-80 bytes from 10.4.1.2: icmp_seq=3 ttl=63 time=20.6 ms
-80 bytes from 10.4.1.2: icmp_seq=4 ttl=63 time=16.0 ms
-80 bytes from 10.4.1.2: icmp_seq=5 ttl=63 time=17.8 ms
+dc1-spine1#ping 10.4.1.2 source loopback 1
+PING 10.4.1.2 (10.4.1.2) from 10.0.1.0 : 72(100) bytes of data.
+80 bytes from 10.4.1.2: icmp_seq=1 ttl=63 time=24.3 ms
+80 bytes from 10.4.1.2: icmp_seq=2 ttl=63 time=19.0 ms
+80 bytes from 10.4.1.2: icmp_seq=3 ttl=63 time=15.1 ms
+80 bytes from 10.4.1.2: icmp_seq=4 ttl=63 time=12.4 ms
+80 bytes from 10.4.1.2: icmp_seq=5 ttl=63 time=17.0 ms
 
---- 10.4.1.2 ping statistics ---
-5 packets transmitted, 5 received, 0% packet loss, time 83ms
-rtt min/avg/max/mdev = 16.051/20.011/23.953/2.780 ms, pipe 2, ipg/ewma 20.834/21.809 ms
-dc1-spine1#ping 10.4.2.2
-PING 10.4.2.2 (10.4.2.2) 72(100) bytes of data.
-80 bytes from 10.4.2.2: icmp_seq=1 ttl=63 time=73.3 ms
-80 bytes from 10.4.2.2: icmp_seq=2 ttl=63 time=69.4 ms
-80 bytes from 10.4.2.2: icmp_seq=3 ttl=63 time=64.0 ms
-80 bytes from 10.4.2.2: icmp_seq=4 ttl=63 time=57.0 ms
-80 bytes from 10.4.2.2: icmp_seq=5 ttl=63 time=51.9 ms
+dc1-spine1#ping 10.4.2.2 source loopback 1
+PING 10.4.2.2 (10.4.2.2) from 10.0.1.0 : 72(100) bytes of data.
+80 bytes from 10.4.2.2: icmp_seq=1 ttl=63 time=46.3 ms
+80 bytes from 10.4.2.2: icmp_seq=2 ttl=63 time=40.7 ms
+80 bytes from 10.4.2.2: icmp_seq=3 ttl=63 time=36.3 ms
+80 bytes from 10.4.2.2: icmp_seq=4 ttl=63 time=30.8 ms
+80 bytes from 10.4.2.2: icmp_seq=5 ttl=63 time=13.5 ms
 
---- 10.4.2.2 ping statistics ---
-5 packets transmitted, 5 received, 0% packet loss, time 45ms
-rtt min/avg/max/mdev = 51.901/63.153/73.302/7.834 ms, pipe 5, ipg/ewma 11.493/67.643 ms
-dc1-spine1#ping 10.4.3.2
-PING 10.4.3.2 (10.4.3.2) 72(100) bytes of data.
-80 bytes from 10.4.3.2: icmp_seq=1 ttl=63 time=38.3 ms
-80 bytes from 10.4.3.2: icmp_seq=2 ttl=63 time=26.1 ms
-80 bytes from 10.4.3.2: icmp_seq=3 ttl=63 time=21.3 ms
-80 bytes from 10.4.3.2: icmp_seq=4 ttl=63 time=14.5 ms
-80 bytes from 10.4.3.2: icmp_seq=5 ttl=63 time=16.9 ms
+dc1-spine1#ping 10.4.3.2 source loopback 1
+PING 10.4.3.2 (10.4.3.2) from 10.0.1.0 : 72(100) bytes of data.
+80 bytes from 10.4.3.2: icmp_seq=1 ttl=63 time=35.0 ms
+80 bytes from 10.4.3.2: icmp_seq=2 ttl=63 time=30.0 ms
+80 bytes from 10.4.3.2: icmp_seq=3 ttl=63 time=26.2 ms
+80 bytes from 10.4.3.2: icmp_seq=4 ttl=63 time=27.2 ms
+80 bytes from 10.4.3.2: icmp_seq=5 ttl=63 time=20.4 ms
 
---- 10.4.3.2 ping statistics ---
-5 packets transmitted, 5 received, 0% packet loss, time 99ms
-rtt min/avg/max/mdev = 14.543/23.477/38.326/8.420 ms, pipe 3, ipg/ewma 24.834/30.415 ms
-dc1-spine1#ping 10.0.0.1
-PING 10.0.0.1 (10.0.0.1) 72(100) bytes of data.
-80 bytes from 10.0.0.1: icmp_seq=1 ttl=64 time=10.6 ms
-80 bytes from 10.0.0.1: icmp_seq=2 ttl=64 time=12.1 ms
-80 bytes from 10.0.0.1: icmp_seq=3 ttl=64 time=12.0 ms
-80 bytes from 10.0.0.1: icmp_seq=4 ttl=64 time=9.07 ms
-80 bytes from 10.0.0.1: icmp_seq=5 ttl=64 time=10.9 ms
+dc1-spine1#ping 10.0.0.1 source loopback 1
+PING 10.0.0.1 (10.0.0.1) from 10.0.1.0 : 72(100) bytes of data.
+80 bytes from 10.0.0.1: icmp_seq=1 ttl=64 time=24.2 ms
+80 bytes from 10.0.0.1: icmp_seq=2 ttl=64 time=16.2 ms
+80 bytes from 10.0.0.1: icmp_seq=3 ttl=64 time=13.5 ms
+80 bytes from 10.0.0.1: icmp_seq=4 ttl=64 time=9.98 ms
+80 bytes from 10.0.0.1: icmp_seq=5 ttl=64 time=7.06 ms
 
---- 10.0.0.1 ping statistics ---
-5 packets transmitted, 5 received, 0% packet loss, time 46ms
-rtt min/avg/max/mdev = 9.078/10.979/12.177/1.118 ms, pipe 2, ipg/ewma 11.684/10.798 ms
-dc1-spine1#ping 10.0.2.0
 PING 10.0.2.0 (10.0.2.0) 72(100) bytes of data.
 80 bytes from 10.0.2.0: icmp_seq=1 ttl=63 time=23.8 ms
 80 bytes from 10.0.2.0: icmp_seq=2 ttl=63 time=17.9 ms
@@ -411,8 +405,4 @@ PING 10.0.2.0 (10.0.2.0) 72(100) bytes of data.
 80 bytes from 10.0.2.0: icmp_seq=4 ttl=63 time=23.7 ms
 80 bytes from 10.0.2.0: icmp_seq=5 ttl=63 time=30.4 ms
 
---- 10.0.2.0 ping statistics ---
-5 packets transmitted, 5 received, 0% packet loss, time 74ms
-rtt min/avg/max/mdev = 17.941/24.353/30.411/4.018 ms, pipe 3, ipg/ewma 18.651/24.345 ms
-dc1-spine1#
 ```
