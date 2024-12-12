@@ -26,7 +26,7 @@
 
 ### **Cхема с адресацией и указанием AS BGP**
 
-![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab02/draw.io.png)
+![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab03/as%2065000.png)
 
 ### **Cхема eve-ng стенда**
 ![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab02/eve-ng-scheme.png)
