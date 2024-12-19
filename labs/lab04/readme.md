@@ -47,11 +47,16 @@ neighbor overlay peer group
 6. Создадим *vlan 100*, для дальнешего подключения к vxlan (VLAN-based VXLAN);
 7. Добавим порт в который подключены хосты в *vlan 100*, **switchport access vlan 100**
 8. Создадим VTI интерфейс **interface Vxlan1**
-9. Настроим интерфейс котоырй будет использован для организации VXLAN туннеля **vxlan source-interface Loopback2**
+9. Настроим интерфейс котоырый будет использован для организации VXLAN туннеля **vxlan source-interface Loopback2**
 10. Выбор порта VXLAN **vxlan udp-port 4789**
 11. Мапинг VLAN к VXLAN **vxlan vlan 100 vni 100**
 12. Разрешить для обнаружения VTEP использовать BGP и static режимы  **vxlan learn-restrict any**
-13. 
+13. Внесем дополнительные настройки в BGP для передачи информации о vxlan:
+    - Route Distinquishers **rd auto** будет сформирован автоматически;
+    - Route-target **route-target both 65000:100** должен совпадать на всех leaf для этого **vxlan**
+    - Включить изучение mac в overlay, для данного **vxlan** mac redistribute learned
+14.  **Настрока leaf завершена!**, можно проверять дотупность host1 до host2.
+
 
 
 
