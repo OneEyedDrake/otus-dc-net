@@ -44,19 +44,19 @@ neighbor dc1 peer group
 
 **Таблица 1 Loopback интерфейсов**
   
-![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab02/addres%20loopback.png)
+![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab04/addres%20loopback.png)
 
 **Таблица 2 *IP адресов* ptp интерейсов leaf и spine**
 
-![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab02/ptp%20network.png)
+![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab04/ptp%20network.png)
 
-**Таблица 3 подсетей хостовых машин**
+**Таблица 3 адреса хостовых машин**
 
-![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab02/host-network.png)
+![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab04/add%20hosts.png)
 
 ### **Cхема с адресацией и указанием AS BGP**
 
-![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab03/as%2065000.png)
+![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab04/as%2065000.png)
 
 ### **Cхема eve-ng стенда**
-![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab02/eve-ng-scheme.png)
+![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab04/eve-ng-scheme.png)
