@@ -515,5 +515,61 @@ AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Li
                                  -                     -       -       0       i
 
 ```
+### **Проверка доcтупности узлов**
+---
+## host3 to host1 и host2
+```
+host3> ping 10.4.100.11
 
+84 bytes from 10.4.100.11 icmp_seq=1 ttl=64 time=125.889 ms
+84 bytes from 10.4.100.11 icmp_seq=2 ttl=64 time=47.588 ms
+84 bytes from 10.4.100.11 icmp_seq=3 ttl=64 time=34.994 ms
+84 bytes from 10.4.100.11 icmp_seq=4 ttl=64 time=35.895 ms
+84 bytes from 10.4.100.11 icmp_seq=5 ttl=64 time=33.612 ms
 
+host3> ping 10.4.100.12
+
+84 bytes from 10.4.100.12 icmp_seq=1 ttl=64 time=54.599 ms
+84 bytes from 10.4.100.12 icmp_seq=2 ttl=64 time=38.559 ms
+84 bytes from 10.4.100.12 icmp_seq=3 ttl=64 time=35.291 ms
+84 bytes from 10.4.100.12 icmp_seq=4 ttl=64 time=32.934 ms
+84 bytes from 10.4.100.12 icmp_seq=5 ttl=64 time=36.670 ms
+```
+## host2 to host1 и host3
+
+```
+host2> ping 10.4.100.11
+
+84 bytes from 10.4.100.11 icmp_seq=1 ttl=64 time=37.645 ms
+84 bytes from 10.4.100.11 icmp_seq=2 ttl=64 time=42.218 ms
+84 bytes from 10.4.100.11 icmp_seq=3 ttl=64 time=34.512 ms
+84 bytes from 10.4.100.11 icmp_seq=4 ttl=64 time=40.211 ms
+84 bytes from 10.4.100.11 icmp_seq=5 ttl=64 time=40.984 ms
+
+host2> ping 10.4.100.13
+
+84 bytes from 10.4.100.13 icmp_seq=1 ttl=64 time=34.271 ms
+84 bytes from 10.4.100.13 icmp_seq=2 ttl=64 time=84.336 ms
+84 bytes from 10.4.100.13 icmp_seq=3 ttl=64 time=35.141 ms
+84 bytes from 10.4.100.13 icmp_seq=4 ttl=64 time=42.346 ms
+84 bytes from 10.4.100.13 icmp_seq=5 ttl=64 time=30.644 ms
+```
+## host1 to host2 и host3
+
+```
+host1> ping 10.4.100.12
+
+84 bytes from 10.4.100.12 icmp_seq=1 ttl=64 time=35.724 ms
+84 bytes from 10.4.100.12 icmp_seq=2 ttl=64 time=65.572 ms
+84 bytes from 10.4.100.12 icmp_seq=3 ttl=64 time=41.538 ms
+84 bytes from 10.4.100.12 icmp_seq=4 ttl=64 time=29.584 ms
+84 bytes from 10.4.100.12 icmp_seq=5 ttl=64 time=35.489 ms
+
+host1> ping 10.4.100.13
+
+84 bytes from 10.4.100.13 icmp_seq=1 ttl=64 time=30.009 ms
+84 bytes from 10.4.100.13 icmp_seq=2 ttl=64 time=30.638 ms
+84 bytes from 10.4.100.13 icmp_seq=3 ttl=64 time=33.904 ms
+84 bytes from 10.4.100.13 icmp_seq=4 ttl=64 time=30.549 ms
+84 bytes from 10.4.100.13 icmp_seq=5 ttl=64 time=38.930 ms
+```
