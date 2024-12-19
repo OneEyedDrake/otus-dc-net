@@ -135,6 +135,7 @@ router bgp 65000
       neighbor overlay activate
 !
 
+```
 
 ## Конфигурация BGP dc1-spine2
 
