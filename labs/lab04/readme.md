@@ -19,21 +19,24 @@
 14. Включим поддрежку расширенного комьюнити для передачи EVPN информации **neighbor overlay send-community extended**
 15. В качестве интерфейса для BGP сессии в overlay используем lo2 **neighbor overlay update-source Loopback2**
 16. Активируем возможноть передачи EVPN информации:
-17. ```
-18.    address-family evpn
-19.    neighbor overlay activate
-20.```
-21. Анонсируем адреса Loopback1-2 в в таблицу маршрутизаци **redistribute connected route-map redistrib_connect**;
-22. **Настрока spine завершена!**
+```
+  address-family evpn
+      neighbor overlay activate
+```
+17. Анонсируем адреса Loopback1-2 в в таблицу маршрутизаци **redistribute connected route-map redistrib_connect**;
+18. **Настрока spine завершена!**
 
 На Leaf:
 1. Используем ранее созданный **BGP процесс 65000**, добавим настройки для Overlay сети
 3. Cделаем настройки peer group *overlay* аналогичные **Spine**
 ```
-neighbor dc1 peer group
-   neighbor dc1 remote-as 65000
-   neighbor dc1 timers 3 9
-   neighbor dc1 password 7
+neighbor overlay peer group
+   neighbor overlay remote-as 65000
+   neighbor overlay update-source Loopback2
+   neighbor overlay timers 3 9
+   neighbor overlay password 7 
+   neighbor overlay send-community extended
+
 ```
 4. В явном виде укажем в конфигурации соседей **Spine**
 ```
@@ -41,9 +44,8 @@ neighbor dc1 peer group
     neighbor 10.2.2.0 peer group dc1
 ```
 5. Анонсируем connected сети командой network
-6. Для настройки ECMP используем команду **maximum-paths 2**. Т.к. по умолчанию BGP заносит в таблицу маршрутизации только лучший маршрут. Значение 2, т.к. на схеме 2 Spine.
-7. Анонсируем адрес Loopback1 в в таблицу маршрутизаци **redistribute connected route-map redistrib_connect**
-Проверим таблицы маршрутизации (они должны содержать все анонсированные connected сети и адрес loopback1, каждого устройства.  
+7. Анонсируем адреса Loopback1-2 в в таблицу маршрутизаци **redistribute connected route-map redistrib_connect**;
+Проверим таблицы маршрутизации (они должны содержать все анонсированные connected сети и адрес loopback1-2, каждого устройства.  
 
 
 **Таблица 1 Loopback интерфейсов**
