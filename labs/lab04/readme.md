@@ -6,20 +6,20 @@
 
 ### **План работы:**
 1. Настроить **ptp** между spine и leaf в соответствии со адресацией и схемой;
-2. Настроить **Loopback** интерфейсы на spine и leaf (для использования BGP в качестве RID);
-3. Включить функционал маршрутизации на spine и leaf командой **ip routing**
-4. Создадим route-map и приматчим **interface Loopback1**(в дальнейшем будет использован для редистрибьюции loopback1;
-5. Включить процесс **BGP**
-6. Выполнить команду router-id *адрес loopback1*;
-7. На Spine, воспользуемся **peer group**, для упрощения конфигруации (все настройки принадлежащие одной **peer group** будут применяться для установления соседсва; **neighbor *dc1* peer group**
-8. Зададим номер AS из приватного дипазона  neighbor dc1 **remote-as 65000**
-9. Зададим таймеры *Keepalive Timer* и *Hold* neighbor dc1 **timers 3 9**
-10. Зададим пароль который будет использован для поднятия сессии с соседом neighbor dc1 **password 7 arista**
-11.Для избежания петель в **IBGP** используется связанность *Full Mesh*, т.к. при передаче маршрута внутри автономной системы AS-path не меняется. Но так как у нас не *Full Mesh*, для решения данный проблемы поможет включение функционала Route Reflector **neighbor dc1 route-reflector-client**, все полученные маршруты будут переданы на все остальные маршрутизаторы в сехеме.
-12. В IBGP чтоб соседи поместили маршрут в таблицу маршрутизации необходимо чтобы у получателя такого анонса был маршрут до Next-Hop, сделать это можно командой **neighbor dc1 next-hop-self**
-13. Настроим автоматическое обнаружение соседсва в соотвествии с префиксом подсети и настроек *peer group dc1* **bgp listen range 10.2.0.0/16 peer-group dc1 remote-as 65000**
-14. Анонсируем адрес Loopback1 в в таблицу маршрутизаци **redistribute connected route-map redistrib_connect**;
-15. **Настрока spine завершена!**
+2. Настроить **Loopback** интерфейсы **lo1** и **lo2** на spine и leaf (для использования в Underlay и Overlay сетях соответсвенно)
+4. Создадим ip-префикc для анонса адресов **lo1-2** интефейсов *ip prefix-list loopback seq 10 permit 10.0.0.0/15 le 32* и route-map и приматчим **prefix-list loopback**(в дальнейшем будет использован для редистрибьюции loopback1-2);
+5. Включим поддержку EVPN на Arista командой **service routing protocols model multi-agent**
+6. Используем ранее созданынй **BGP процесс 65000**, добавим настройки для Overlay сети
+7. На Spine, воспользуемся **peer group**, для упрощения конфигруации (все настройки принадлежащие одной **peer group** будут применяться для установления соседсва; **neighbor *overlay* peer group**
+9. Зададим номер AS из приватного дипазона  neighbor overlay **remote-as 65000**
+10. Зададим таймеры *Keepalive Timer* и *Hold* neighbor overlay **timers 3 9**
+11. Зададим пароль который будет использован для поднятия сессии с соседом neighbor overlay **password 7 arista-overlay**
+12. Для передачи EVPN маршрутов между leaf включим функционал Route Reflector **neighbor overlay route-reflector-client**, все полученные маршруты будут переданы на все остальные маршрутизаторы в сехеме.
+13. Настроим автоматическое обнаружение соседсва в соотвествии с префиксом подсети и настроек *peer group overlay* **bgp listen range 10.2.0.0/16 peer-group dc1 remote-as 65000**
+14. Включим поддрежку расширенного комьюнити для передачи EVPN информации **neighbor overlay send-community extended**
+15. В качестве интерфейса для BGP сессии в overlay используем lo2 **neighbor overlay update-source Loopback2**
+16. Анонсируем адреса Loopback1-2 в в таблицу маршрутизаци **redistribute connected route-map redistrib_connect**;
+17. **Настрока spine завершена!**
 
 На Leaf:
 1. Включить процесс **BGP**
