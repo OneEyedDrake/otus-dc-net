@@ -40,12 +40,19 @@ neighbor overlay peer group
 ```
 4. В явном виде укажем в конфигурации соседей **Spine**
 ```
-    neighbor 10.2.1.0 peer group dc1
-    neighbor 10.2.2.0 peer group dc1
+    neighbor 10.2.1.0 peer group overlay
+    neighbor 10.2.2.0 peer group overlay
 ```
-5. Анонсируем connected сети командой network
-7. Анонсируем адреса Loopback1-2 в в таблицу маршрутизаци **redistribute connected route-map redistrib_connect**;
-Проверим таблицы маршрутизации (они должны содержать все анонсированные connected сети и адрес loopback1-2, каждого устройства.  
+5. Анонсируем адреса Loopback1-2 в в таблицу маршрутизаци **redistribute connected route-map redistrib_connect**;
+6. Создадим *vlan 100*, для дальнешего подключения к vxlan (VLAN-based VXLAN);
+7. Добавим порт в который подключены хосты в *vlan 100*, **switchport access vlan 100**
+8. Создадим VTI интерфейс **interface Vxlan1**
+9. Настроим интерфейс котоырй будет использован для организации VXLAN туннеля **vxlan source-interface Loopback2**
+10. Выбор порта VXLAN **vxlan udp-port 4789**
+11. Мапинг VLAN к VXLAN **vxlan vlan 100 vni 100**
+12. Разрешить для обнаружения VTEP использовать BGP и static режимы  **vxlan learn-restrict any**
+13. 
+
 
 
 **Таблица 1 Loopback интерфейсов**
