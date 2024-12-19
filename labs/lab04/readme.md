@@ -403,4 +403,117 @@ router bgp 65000
 !
 end
 ```
+## Вывод команд show bgp evpn summary, show bgp evpn и show bgp evpn route-type mac-ip dc1-spine1
+
+```
+dc1-spine1#show bgp evpn summary
+BGP summary information for VRF default
+Router identifier 10.0.1.0, local AS number 65000
+Neighbor Status Codes: m - Under maintenance
+  Neighbor V AS           MsgRcvd   MsgSent  InQ OutQ  Up/Down State   PfxRcd PfxAcc
+  10.1.0.1 4 65000           1616      1628    0    0 01:08:42 Estab   2      2
+  10.1.0.2 4 65000           1601      1606    0    0 01:07:57 Estab   2      2
+  10.1.0.3 4 65000           1597      1603    0    0 01:07:56 Estab   2      2
+
+dc1-spine1#show bgp evpn
+BGP routing table information for VRF default
+Router identifier 10.0.1.0, local AS number 65000
+Route status codes: * - valid, > - active, S - Stale, E - ECMP head, e - ECMP
+                    c - Contributing to ECMP, % - Pending BGP convergence
+Origin codes: i - IGP, e - EGP, ? - incomplete
+AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Link Local Nexthop
+
+          Network                Next Hop              Metric  LocPref Weight  Path
+ * >      RD: 10.0.0.1:100 mac-ip 0050.7966.6802
+                                 10.1.0.1              -       100     0       i
+ * >      RD: 10.0.0.2:100 mac-ip 0050.7966.6808
+                                 10.1.0.2              -       100     0       i
+ * >      RD: 10.0.0.3:100 mac-ip 0050.7966.680a
+                                 10.1.0.3              -       100     0       i
+ * >      RD: 10.0.0.1:100 imet 10.1.0.1
+                                 10.1.0.1              -       100     0       i
+ * >      RD: 10.0.0.2:100 imet 10.1.0.2
+                                 10.1.0.2              -       100     0       i
+ * >      RD: 10.0.0.3:100 imet 10.1.0.3
+                                 10.1.0.3              -       100     0       i
+
+dc1-spine1#show bgp evpn route-type mac-ip
+BGP routing table information for VRF default
+Router identifier 10.0.1.0, local AS number 65000
+Route status codes: * - valid, > - active, S - Stale, E - ECMP head, e - ECMP
+                    c - Contributing to ECMP, % - Pending BGP convergence
+Origin codes: i - IGP, e - EGP, ? - incomplete
+AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Link Local Nexthop
+
+          Network                Next Hop              Metric  LocPref Weight  Path
+ * >      RD: 10.0.0.1:100 mac-ip 0050.7966.6802
+                                 10.1.0.1              -       100     0       i
+ * >      RD: 10.0.0.2:100 mac-ip 0050.7966.6808
+                                 10.1.0.2              -       100     0       i
+ * >      RD: 10.0.0.3:100 mac-ip 0050.7966.680a
+                                 10.1.0.3              -       100     0       i
+
+
+```
+## Вывод команд show bgp evpn summary, show bgp evpn и show bgp evpn route-type mac-ip dc1-leaf3
+```
+dc1-leaf3#show bgp evpn summary
+BGP summary information for VRF default
+Router identifier 10.0.0.3, local AS number 65000
+Neighbor Status Codes: m - Under maintenance
+  Neighbor V AS           MsgRcvd   MsgSent  InQ OutQ  Up/Down State   PfxRcd PfxAcc
+  10.1.1.0 4 65000           1718      1700    0    0 01:09:55 Estab   4      4
+  10.1.2.0 4 65000           1717      1700    0    0 01:09:42 Estab   4      4
+
+dc1-leaf3#show bgp evpn
+BGP routing table information for VRF default
+Router identifier 10.0.0.3, local AS number 65000
+Route status codes: * - valid, > - active, S - Stale, E - ECMP head, e - ECMP
+                    c - Contributing to ECMP, % - Pending BGP convergence
+Origin codes: i - IGP, e - EGP, ? - incomplete
+AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Link Local Nexthop
+
+          Network                Next Hop              Metric  LocPref Weight  Path
+ * >Ec    RD: 10.0.0.1:100 mac-ip 0050.7966.6802
+                                 10.1.0.1              -       100     0       i Or-ID: 10.0.0.1 C-LST: 10.0.1.0
+ *  ec    RD: 10.0.0.1:100 mac-ip 0050.7966.6802
+                                 10.1.0.1              -       100     0       i Or-ID: 10.0.0.1 C-LST: 10.0.2.0
+ * >Ec    RD: 10.0.0.2:100 mac-ip 0050.7966.6808
+                                 10.1.0.2              -       100     0       i Or-ID: 10.0.0.2 C-LST: 10.0.2.0
+ *  ec    RD: 10.0.0.2:100 mac-ip 0050.7966.6808
+                                 10.1.0.2              -       100     0       i Or-ID: 10.0.0.2 C-LST: 10.0.1.0
+ * >      RD: 10.0.0.3:100 mac-ip 0050.7966.680a
+                                 -                     -       -       0       i
+ * >Ec    RD: 10.0.0.1:100 imet 10.1.0.1
+                                 10.1.0.1              -       100     0       i Or-ID: 10.0.0.1 C-LST: 10.0.1.0
+ *  ec    RD: 10.0.0.1:100 imet 10.1.0.1
+                                 10.1.0.1              -       100     0       i Or-ID: 10.0.0.1 C-LST: 10.0.2.0
+ * >Ec    RD: 10.0.0.2:100 imet 10.1.0.2
+                                 10.1.0.2              -       100     0       i Or-ID: 10.0.0.2 C-LST: 10.0.1.0
+ *  ec    RD: 10.0.0.2:100 imet 10.1.0.2
+                                 10.1.0.2              -       100     0       i Or-ID: 10.0.0.2 C-LST: 10.0.2.0
+ * >      RD: 10.0.0.3:100 imet 10.1.0.3
+
+dc1-leaf3#show bgp evpn route-type mac-ip
+BGP routing table information for VRF default
+Router identifier 10.0.0.3, local AS number 65000
+Route status codes: * - valid, > - active, S - Stale, E - ECMP head, e - ECMP
+                    c - Contributing to ECMP, % - Pending BGP convergence
+Origin codes: i - IGP, e - EGP, ? - incomplete
+AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Link Local Nexthop
+
+          Network                Next Hop              Metric  LocPref Weight  Path
+ * >Ec    RD: 10.0.0.1:100 mac-ip 0050.7966.6802
+                                 10.1.0.1              -       100     0       i Or-ID: 10.0.0.1 C-LST: 10.0.1.0
+ *  ec    RD: 10.0.0.1:100 mac-ip 0050.7966.6802
+                                 10.1.0.1              -       100     0       i Or-ID: 10.0.0.1 C-LST: 10.0.2.0
+ * >Ec    RD: 10.0.0.2:100 mac-ip 0050.7966.6808
+                                 10.1.0.2              -       100     0       i Or-ID: 10.0.0.2 C-LST: 10.0.2.0
+ *  ec    RD: 10.0.0.2:100 mac-ip 0050.7966.6808
+                                 10.1.0.2              -       100     0       i Or-ID: 10.0.0.2 C-LST: 10.0.1.0
+ * >      RD: 10.0.0.3:100 mac-ip 0050.7966.680a
+                                 -                     -       -       0       i
+
+```
+
 
