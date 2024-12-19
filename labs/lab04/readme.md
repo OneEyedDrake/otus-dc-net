@@ -20,7 +20,7 @@
 15. В качестве интерфейса для BGP сессии в overlay используем lo2 **neighbor overlay update-source Loopback2**
 16. Активируем возможноть передачи EVPN информации:
 17. ```
-18. address-family evpn
+18.    address-family evpn
 19.    neighbor overlay activate
 20.```
 21. Анонсируем адреса Loopback1-2 в в таблицу маршрутизаци **redistribute connected route-map redistrib_connect**;
