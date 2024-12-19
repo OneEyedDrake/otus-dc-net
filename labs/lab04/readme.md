@@ -15,7 +15,7 @@
 10. Зададим таймеры *Keepalive Timer* и *Hold* neighbor overlay **timers 3 9**
 11. Зададим пароль который будет использован для поднятия сессии с соседом neighbor overlay **password 7 arista-overlay**
 12. Для передачи EVPN маршрутов между leaf включим функционал Route Reflector **neighbor overlay route-reflector-client**, все полученные маршруты будут переданы на все остальные маршрутизаторы в сехеме.
-13. Настроим автоматическое обнаружение соседсва в соотвествии с префиксом подсети и настроек *peer group overlay* **bgp listen range 10.2.0.0/16 peer-group dc1 remote-as 65000**
+13. Настроим автоматическое обнаружение соседсва в соотвествии с префиксом подсети и настроек *peer group overlay* **bgp listen range 10.1.0.0/16 peer-group overlay remote-as 65000**
 14. Включим поддрежку расширенного комьюнити для передачи EVPN информации **neighbor overlay send-community extended**
 15. В качестве интерфейса для BGP сессии в overlay используем lo2 **neighbor overlay update-source Loopback2**
 16. Активируем возможноть передачи EVPN информации:
