@@ -344,5 +344,127 @@ router bgp 65000
       route-target export evpn 65000:10000
       redistribute connected
 ```
+## Вывод команд show bgp evpn route-type ip-prefix ipv4, show ip route vrf tenant1 dc1-leaf1
+```
+dc1-leaf1#show bgp evpn route-type ip-prefix ipv4
+BGP routing table information for VRF default
+Router identifier 10.0.0.1, local AS number 65000
+Route status codes: * - valid, > - active, S - Stale, E - ECMP head, e - ECMP
+                    c - Contributing to ECMP, % - Pending BGP convergence
+Origin codes: i - IGP, e - EGP, ? - incomplete
+AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Link Local Nexthop
+
+          Network                Next Hop              Metric  LocPref Weight  Path
+ * >Ec    RD: 10.0.0.3:10000 ip-prefix 10.4.70.0/24
+                                 10.1.0.3              -       100     0       i Or-ID: 10.0.0.3 C-LST: 10.0.1.0
+ *  ec    RD: 10.0.0.3:10000 ip-prefix 10.4.70.0/24
+                                 10.1.0.3              -       100     0       i Or-ID: 10.0.0.3 C-LST: 10.0.2.0
+ * >      RD: 10.0.0.1:10000 ip-prefix 10.4.100.0/24
+                                 -                     -       -       0       i
+ * >Ec    RD: 10.0.0.2:10000 ip-prefix 10.4.100.0/24
+                                 10.1.0.2              -       100     0       i Or-ID: 10.0.0.2 C-LST: 10.0.1.0
+ *  ec    RD: 10.0.0.2:10000 ip-prefix 10.4.100.0/24
+                                 10.1.0.2              -       100     0       i Or-ID: 10.0.0.2 C-LST: 10.0.2.0
+ * >Ec    RD: 10.0.0.3:10000 ip-prefix 10.4.100.0/24
+                                 10.1.0.3              -       100     0       i Or-ID: 10.0.0.3 C-LST: 10.0.1.0
+ *  ec    RD: 10.0.0.3:10000 ip-prefix 10.4.100.0/24
+                                 10.1.0.3              -       100     0       i Or-ID: 10.0.0.3 C-LST: 10.0.2.0
+dc1-leaf1#show ip route vrf tenant1
+
+VRF: tenant1
+Codes: C - connected, S - static, K - kernel,
+       O - OSPF, IA - OSPF inter area, E1 - OSPF external type 1,
+       E2 - OSPF external type 2, N1 - OSPF NSSA external type 1,
+       N2 - OSPF NSSA external type2, B - Other BGP Routes,
+       B I - iBGP, B E - eBGP, R - RIP, I L1 - IS-IS level 1,
+       I L2 - IS-IS level 2, O3 - OSPFv3, A B - BGP Aggregate,
+       A O - OSPF Summary, NG - Nexthop Group Static Route,
+       V - VXLAN Control Service, M - Martian,
+       DH - DHCP client installed default route,
+       DP - Dynamic Policy Route, L - VRF Leaked,
+       G  - gRIBI, RC - Route Cache Route
+
+Gateway of last resort is not set
+
+ B I      10.4.70.0/24 [200/0] via VTEP 10.1.0.3 VNI 10000 router-mac 50:00:00:f6:ad:37 local-interface Vxlan1
+ C        10.4.100.0/24 is directly connected, Vlan100
+```
+## Вывод команд show bgp evpn route-type ip-prefix ipv4, show ip route vrf tenant1 dc1-leaf3
+```
+dc1-leaf3#show bgp evpn route-type ip-prefix ipv4
+BGP routing table information for VRF default
+Router identifier 10.0.0.3, local AS number 65000
+Route status codes: * - valid, > - active, S - Stale, E - ECMP head, e - ECMP
+                    c - Contributing to ECMP, % - Pending BGP convergence
+Origin codes: i - IGP, e - EGP, ? - incomplete
+AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Link Local Nexthop
+
+          Network                Next Hop              Metric  LocPref Weight  Path
+ * >      RD: 10.0.0.3:10000 ip-prefix 10.4.70.0/24
+                                 -                     -       -       0       i
+ * >Ec    RD: 10.0.0.1:10000 ip-prefix 10.4.100.0/24
+                                 10.1.0.1              -       100     0       i Or-ID: 10.0.0.1 C-LST: 10.0.1.0
+ *  ec    RD: 10.0.0.1:10000 ip-prefix 10.4.100.0/24
+                                 10.1.0.1              -       100     0       i Or-ID: 10.0.0.1 C-LST: 10.0.2.0
+ * >Ec    RD: 10.0.0.2:10000 ip-prefix 10.4.100.0/24
+                                 10.1.0.2              -       100     0       i Or-ID: 10.0.0.2 C-LST: 10.0.1.0
+ *  ec    RD: 10.0.0.2:10000 ip-prefix 10.4.100.0/24
+                                 10.1.0.2              -       100     0       i Or-ID: 10.0.0.2 C-LST: 10.0.2.0
+ * >      RD: 10.0.0.3:10000 ip-prefix 10.4.100.0/24
+                                 -                     -       -       0       i
+dc1-leaf3#show ip route vrf tenant1
+
+VRF: tenant1
+Codes: C - connected, S - static, K - kernel,
+       O - OSPF, IA - OSPF inter area, E1 - OSPF external type 1,
+       E2 - OSPF external type 2, N1 - OSPF NSSA external type 1,
+       N2 - OSPF NSSA external type2, B - Other BGP Routes,
+       B I - iBGP, B E - eBGP, R - RIP, I L1 - IS-IS level 1,
+       I L2 - IS-IS level 2, O3 - OSPFv3, A B - BGP Aggregate,
+       A O - OSPF Summary, NG - Nexthop Group Static Route,
+       V - VXLAN Control Service, M - Martian,
+       DH - DHCP client installed default route,
+       DP - Dynamic Policy Route, L - VRF Leaked,
+       G  - gRIBI, RC - Route Cache Route
+
+Gateway of last resort is not set
+
+ C        10.4.70.0/24 is directly connected, Vlan70
+ C        10.4.100.0/24 is directly connected, Vlan100
+```
+### **Проверка доcтупности узлов**
+---
+## host1 to host4
+```
+VPCS> ping 10.4.70.13
+
+84 bytes from 10.4.70.13 icmp_seq=1 ttl=63 time=661.463 ms
+84 bytes from 10.4.70.13 icmp_seq=2 ttl=62 time=65.768 ms
+84 bytes from 10.4.70.13 icmp_seq=3 ttl=62 time=38.719 ms
+84 bytes from 10.4.70.13 icmp_seq=4 ttl=62 time=38.263 ms
+84 bytes from 10.4.70.13 icmp_seq=5 ttl=62 time=42.072 ms
+
+```
+## host2 to host4
+```
+VPCS> ping 10.4.70.13
+
+84 bytes from 10.4.70.13 icmp_seq=1 ttl=62 time=38.103 ms
+84 bytes from 10.4.70.13 icmp_seq=2 ttl=62 time=37.017 ms
+84 bytes from 10.4.70.13 icmp_seq=3 ttl=62 time=43.536 ms
+84 bytes from 10.4.70.13 icmp_seq=4 ttl=62 time=48.725 ms
+
+```
+## host4 to host1
+
+```
+VPCS> ping 10.4.100.11
+
+84 bytes from 10.4.100.11 icmp_seq=1 ttl=62 time=46.161 ms
+84 bytes from 10.4.100.11 icmp_seq=2 ttl=62 time=57.466 ms
+84 bytes from 10.4.100.11 icmp_seq=3 ttl=62 time=39.475 ms
+84 bytes from 10.4.100.11 icmp_seq=4 ttl=62 time=63.441 ms
+
+```
 
       
