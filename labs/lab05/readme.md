@@ -26,7 +26,6 @@
     3.5 сделаем vxlan vni необходимый для работы симметирчной маршрутизации в vxlan **vxlan vrf tenant1 vni 10000**
        
     3.6 Настроим BGP для передачи машрутной информации в **vrf *tenant1***:
-   
         - Route Distinquishers **rd 10.0.0.3:10000** будет уникальный для каждого leaf;
    
         - Route-target на импорт и экспорт маршрутов для L3 VNI **route-target import evpn 65000:10000** **route-target export evpn 65000:10000** должен совпадать на всех leaf для этого **vxlan**
