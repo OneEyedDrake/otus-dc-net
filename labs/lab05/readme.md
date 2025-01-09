@@ -35,5 +35,20 @@
    
 **Готово!** можно проверять доступность хостов host1 и host4
 
+**Таблица 1 Loopback интерфейсов**
+  
+![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab05/addres%20loopback.png)
+
+**Таблица 2 *IP адресов* ptp интерейсов leaf и spine**
+
+![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab05/ptp%20network.png)
+
+**Таблица 3 адреса хостовых машин**
+
+![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab05/host%20add.png)
+
+### **Cхема eve-ng стенда**
+![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab05/eve-ng-scheme.png)
+
 
       
