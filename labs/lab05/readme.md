@@ -249,6 +249,7 @@ router bgp 65000
 ```
 
 ## Конфигурация dc1-leaf3
+```
 hostname dc1-leaf3
 !
 spanning-tree mode mstp
