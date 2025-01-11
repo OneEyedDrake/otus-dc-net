@@ -8,8 +8,14 @@
 
 ### **План работы:**
 1. Настройки будут произвоиться только на leaf, т.к. настройка идёт в Overlay сети;
-2. На leaf3 создадим 70-й vlan и подключим в него нового клиента;
-3. На всех leaf:
+2. На leaf3 создадим 70-й vlan для дальнешего подключения к vxlan (VLAN-based VXLAN) и подключения в него нового клиента;
+   2.1 Добавим порт в который подключены хосты в *vlan 70*, **switchport access vlan 70**
+   2.2 Мапинг VLAN к VXLAN **vxlan vlan 70 vni 70**
+   2.3 Внесем дополнительные настройки в BGP для передачи информации о vxlan:
+    - Route Distinquishers **rd auto** будет сформирован автоматически;
+    - Route-target **route-target both 65000:70** должен совпадать на всех leaf для этого **vxlan**
+    - Включить изучение mac в overlay, для данного *vxlan* **mac redistribute learned**
+4. На всех leaf:
    
     3.1 создадим VRF инстанс **vrf instance *tenant1***в котором будут расположены клиенты;
    
@@ -33,7 +39,7 @@
    
         - Включить **redistribute connected** для передачи маршрутной информации о подключенных подсетях;
    
-**Готово!** можно проверять доступность хостов host1 и host4
+**Готово!** можно проверять доступность хостов host4 и host1
 
 **Таблица 1 Loopback интерфейсов**
   
@@ -147,7 +153,6 @@ router bgp 65000
       rd 10.0.0.1:10000
       route-target import evpn 65000:10000
       route-target export evpn 65000:10000
-      redistribute connected
 !
 ```
 ## Конфигурация dc1-leaf2
@@ -240,12 +245,14 @@ router bgp 65000
       rd 10.0.0.2:10000
       route-target import evpn 65000:10000
       route-target export evpn 65000:10000
-      redistribute connected
 !
 ```
 
 ## Конфигурация dc1-leaf3
-```
+hostname dc1-leaf3
+!
+spanning-tree mode mstp
+!
 vlan 70
    name tenant1-test2
 !
@@ -297,6 +304,7 @@ interface Vlan100
 interface Vxlan1
    vxlan source-interface Loopback2
    vxlan udp-port 4789
+   vxlan vlan 70 vni 70
    vxlan vlan 100 vni 100
    vxlan vrf tenant1 vni 10000
    vxlan learn-restrict any
@@ -335,6 +343,11 @@ router bgp 65000
       route-target both 65000:100
       redistribute learned
    !
+   vlan 70
+      rd auto
+      route-target both 65000:70
+      redistribute learned
+   !
    address-family evpn
       neighbor overlay activate
    !
@@ -342,7 +355,8 @@ router bgp 65000
       rd 10.0.0.3:10000
       route-target import evpn 65000:10000
       route-target export evpn 65000:10000
-      redistribute connected
+!
+end
 ```
 ## Вывод команд show bgp evpn route-type ip-prefix ipv4, show ip route vrf tenant1 dc1-leaf1
 ```
