@@ -359,9 +359,9 @@ router bgp 65000
 !
 end
 ```
-## Вывод команд show bgp evpn route-type ip-prefix ipv4, show ip route vrf tenant1 dc1-leaf1
+## Вывод команд show bgp evpn route-type mac-ip, show ip route vrf tenant1 dc1-leaf1
 ```
-dc1-leaf1#show bgp evpn route-type ip-prefix ipv4
+dc1-leaf1#show bgp evpn route-type mac-ip
 BGP routing table information for VRF default
 Router identifier 10.0.0.1, local AS number 65000
 Route status codes: * - valid, > - active, S - Stale, E - ECMP head, e - ECMP
@@ -370,20 +370,27 @@ Origin codes: i - IGP, e - EGP, ? - incomplete
 AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Link Local Nexthop
 
           Network                Next Hop              Metric  LocPref Weight  Path
- * >Ec    RD: 10.0.0.3:10000 ip-prefix 10.4.70.0/24
-                                 10.1.0.3              -       100     0       i Or-ID: 10.0.0.3 C-LST: 10.0.1.0
- *  ec    RD: 10.0.0.3:10000 ip-prefix 10.4.70.0/24
-                                 10.1.0.3              -       100     0       i Or-ID: 10.0.0.3 C-LST: 10.0.2.0
- * >      RD: 10.0.0.1:10000 ip-prefix 10.4.100.0/24
+ * >      RD: 10.0.0.1:100 mac-ip 0050.7966.6802
                                  -                     -       -       0       i
- * >Ec    RD: 10.0.0.2:10000 ip-prefix 10.4.100.0/24
+ * >      RD: 10.0.0.1:100 mac-ip 0050.7966.6802 10.4.100.11
+                                 -                     -       -       0       i
+ * >Ec    RD: 10.0.0.2:100 mac-ip 0050.7966.6808
                                  10.1.0.2              -       100     0       i Or-ID: 10.0.0.2 C-LST: 10.0.1.0
- *  ec    RD: 10.0.0.2:10000 ip-prefix 10.4.100.0/24
+ *  ec    RD: 10.0.0.2:100 mac-ip 0050.7966.6808
                                  10.1.0.2              -       100     0       i Or-ID: 10.0.0.2 C-LST: 10.0.2.0
- * >Ec    RD: 10.0.0.3:10000 ip-prefix 10.4.100.0/24
-                                 10.1.0.3              -       100     0       i Or-ID: 10.0.0.3 C-LST: 10.0.1.0
- *  ec    RD: 10.0.0.3:10000 ip-prefix 10.4.100.0/24
+ * >Ec    RD: 10.0.0.2:100 mac-ip 0050.7966.6808 10.4.100.12
+                                 10.1.0.2              -       100     0       i Or-ID: 10.0.0.2 C-LST: 10.0.2.0
+ *  ec    RD: 10.0.0.2:100 mac-ip 0050.7966.6808 10.4.100.12
+                                 10.1.0.2              -       100     0       i Or-ID: 10.0.0.2 C-LST: 10.0.1.0
+ * >Ec    RD: 10.0.0.3:70 mac-ip 0050.7966.680a
                                  10.1.0.3              -       100     0       i Or-ID: 10.0.0.3 C-LST: 10.0.2.0
+ *  ec    RD: 10.0.0.3:70 mac-ip 0050.7966.680a
+                                 10.1.0.3              -       100     0       i Or-ID: 10.0.0.3 C-LST: 10.0.1.0
+ * >Ec    RD: 10.0.0.3:70 mac-ip 0050.7966.680a 10.4.70.13
+                                 10.1.0.3              -       100     0       i Or-ID: 10.0.0.3 C-LST: 10.0.2.0
+ *  ec    RD: 10.0.0.3:70 mac-ip 0050.7966.680a 10.4.70.13
+                                 10.1.0.3              -       100     0       i Or-ID: 10.0.0.3 C-LST: 10.0.1.0
+dc1-leaf1#
 dc1-leaf1#show ip route vrf tenant1
 
 VRF: tenant1
@@ -401,12 +408,14 @@ Codes: C - connected, S - static, K - kernel,
 
 Gateway of last resort is not set
 
- B I      10.4.70.0/24 [200/0] via VTEP 10.1.0.3 VNI 10000 router-mac 50:00:00:f6:ad:37 local-interface Vxlan1
+ B I      10.4.70.13/32 [200/0] via VTEP 10.1.0.3 VNI 10000 router-mac 50:00:00:f6:ad:37 local-interface Vxlan1
+ B I      10.4.100.12/32 [200/0] via VTEP 10.1.0.2 VNI 10000 router-mac 50:00:00:72:8b:31 local-interface Vxlan1
  C        10.4.100.0/24 is directly connected, Vlan100
+
 ```
-## Вывод команд show bgp evpn route-type ip-prefix ipv4, show ip route vrf tenant1 dc1-leaf3
+## Вывод команд show bgp evpn route-type mac-ip, show ip route vrf tenant1 dc1-leaf3
 ```
-dc1-leaf3#show bgp evpn route-type ip-prefix ipv4
+dc1-leaf3#show bgp evpn route-type mac-ip
 BGP routing table information for VRF default
 Router identifier 10.0.0.3, local AS number 65000
 Route status codes: * - valid, > - active, S - Stale, E - ECMP head, e - ECMP
@@ -415,17 +424,25 @@ Origin codes: i - IGP, e - EGP, ? - incomplete
 AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Link Local Nexthop
 
           Network                Next Hop              Metric  LocPref Weight  Path
- * >      RD: 10.0.0.3:10000 ip-prefix 10.4.70.0/24
-                                 -                     -       -       0       i
- * >Ec    RD: 10.0.0.1:10000 ip-prefix 10.4.100.0/24
+ * >Ec    RD: 10.0.0.1:100 mac-ip 0050.7966.6802
                                  10.1.0.1              -       100     0       i Or-ID: 10.0.0.1 C-LST: 10.0.1.0
- *  ec    RD: 10.0.0.1:10000 ip-prefix 10.4.100.0/24
+ *  ec    RD: 10.0.0.1:100 mac-ip 0050.7966.6802
                                  10.1.0.1              -       100     0       i Or-ID: 10.0.0.1 C-LST: 10.0.2.0
- * >Ec    RD: 10.0.0.2:10000 ip-prefix 10.4.100.0/24
-                                 10.1.0.2              -       100     0       i Or-ID: 10.0.0.2 C-LST: 10.0.1.0
- *  ec    RD: 10.0.0.2:10000 ip-prefix 10.4.100.0/24
+ * >Ec    RD: 10.0.0.1:100 mac-ip 0050.7966.6802 10.4.100.11
+                                 10.1.0.1              -       100     0       i Or-ID: 10.0.0.1 C-LST: 10.0.1.0
+ *  ec    RD: 10.0.0.1:100 mac-ip 0050.7966.6802 10.4.100.11
+                                 10.1.0.1              -       100     0       i Or-ID: 10.0.0.1 C-LST: 10.0.2.0
+ * >Ec    RD: 10.0.0.2:100 mac-ip 0050.7966.6808
                                  10.1.0.2              -       100     0       i Or-ID: 10.0.0.2 C-LST: 10.0.2.0
- * >      RD: 10.0.0.3:10000 ip-prefix 10.4.100.0/24
+ *  ec    RD: 10.0.0.2:100 mac-ip 0050.7966.6808
+                                 10.1.0.2              -       100     0       i Or-ID: 10.0.0.2 C-LST: 10.0.1.0
+ * >Ec    RD: 10.0.0.2:100 mac-ip 0050.7966.6808 10.4.100.12
+                                 10.1.0.2              -       100     0       i Or-ID: 10.0.0.2 C-LST: 10.0.2.0
+ *  ec    RD: 10.0.0.2:100 mac-ip 0050.7966.6808 10.4.100.12
+                                 10.1.0.2              -       100     0       i Or-ID: 10.0.0.2 C-LST: 10.0.1.0
+ * >      RD: 10.0.0.3:70 mac-ip 0050.7966.680a
+                                 -                     -       -       0       i
+ * >      RD: 10.0.0.3:70 mac-ip 0050.7966.680a 10.4.70.13
                                  -                     -       -       0       i
 dc1-leaf3#show ip route vrf tenant1
 
@@ -445,7 +462,10 @@ Codes: C - connected, S - static, K - kernel,
 Gateway of last resort is not set
 
  C        10.4.70.0/24 is directly connected, Vlan70
+ B I      10.4.100.11/32 [200/0] via VTEP 10.1.0.1 VNI 10000 router-mac 50:00:00:15:f4:e8 local-interface Vxlan1
+ B I      10.4.100.12/32 [200/0] via VTEP 10.1.0.2 VNI 10000 router-mac 50:00:00:72:8b:31 local-interface Vxlan1
  C        10.4.100.0/24 is directly connected, Vlan100
+
 ```
 ### **Проверка доcтупности узлов**
 ---
