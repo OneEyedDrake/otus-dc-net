@@ -377,5 +377,145 @@ router bgp 65000
 !
 end
 ```
+## Вывод команд show bgp evpn route-type auto-discovery esi, show bgp evpn route-type ethernet-segment esi, show bgp evpn instance vlan, dc1-leaf1
+```
+BGP routing table information for VRF default
+Router identifier 10.0.0.1, local AS number 65000
+Route status codes: * - valid, > - active, S - Stale, E - ECMP head, e - ECMP
+                    c - Contributing to ECMP, % - Pending BGP convergence
+Origin codes: i - IGP, e - EGP, ? - incomplete
+AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Link Local Nexthop
+
+          Network                Next Hop              Metric  LocPref Weight  Path
+ * >      RD: 10.0.0.1:100 auto-discovery 0 0000:2222:3333:4444:0000
+                                 -                     -       -       0       i
+ * >Ec    RD: 10.0.0.2:100 auto-discovery 0 0000:2222:3333:4444:0000
+                                 10.1.0.2              -       100     0       i Or-ID: 10.0.0.2 C-LST: 10.0.1.0
+ *  ec    RD: 10.0.0.2:100 auto-discovery 0 0000:2222:3333:4444:0000
+                                 10.1.0.2              -       100     0       i Or-ID: 10.0.0.2 C-LST: 10.0.2.0
+ * >      RD: 10.1.0.1:1 auto-discovery 0000:2222:3333:4444:0000
+                                 -                     -       -       0       i
+ * >Ec    RD: 10.1.0.2:1 auto-discovery 0000:2222:3333:4444:0000
+                                 10.1.0.2              -       100     0       i Or-ID: 10.0.0.2 C-LST: 10.0.1.0
+ *  ec    RD: 10.1.0.2:1 auto-discovery 0000:2222:3333:4444:0000
+                                 10.1.0.2              -       100     0       i Or-ID: 10.0.0.2 C-LST: 10.0.2.0
+
+dc1-leaf1#show bgp evpn route-type ethernet-segment esi 0000:2222:3333:4444:0000
+BGP routing table information for VRF default
+Router identifier 10.0.0.1, local AS number 65000
+Route status codes: * - valid, > - active, S - Stale, E - ECMP head, e - ECMP
+                    c - Contributing to ECMP, % - Pending BGP convergence
+Origin codes: i - IGP, e - EGP, ? - incomplete
+AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Link Local Nexthop
+
+          Network                Next Hop              Metric  LocPref Weight  Path
+ * >      RD: 10.1.0.1:1 ethernet-segment 0000:2222:3333:4444:0000 10.1.0.1
+                                 -                     -       -       0       i
+ * >Ec    RD: 10.1.0.2:1 ethernet-segment 0000:2222:3333:4444:0000 10.1.0.2
+                                 10.1.0.2              -       100     0       i Or-ID: 10.0.0.2 C-LST: 10.0.1.0
+ *  ec    RD: 10.1.0.2:1 ethernet-segment 0000:2222:3333:4444:0000 10.1.0.2
+                                 10.1.0.2              -       100     0       i Or-ID: 10.0.0.2 C-LST: 10.0.2.0
+dc1-leaf1#show bgp evpn instance vlan 100
+EVPN instance: VLAN 100
+  Route distinguisher: 0:0
+  Route target import: Route-Target-AS:65000:100
+  Route target export: Route-Target-AS:65000:100
+  Service interface: VLAN-based
+  Local VXLAN IP address: 10.1.0.1
+  VXLAN: enabled
+  MPLS: disabled
+  Local ethernet segment:
+    ESI: 0000:2222:3333:4444:0000
+      Interface: Port-Channel1
+      Mode: all-active
+      State: up
+      ES-Import RT: 55:55:55:55:55:55
+      DF election algorithm: modulus
+      Designated forwarder: 10.1.0.1
+      Non-Designated forwarder: 10.1.0.2
+
+```
+
+## Вывод команд show bgp evpn route-type auto-discovery esi, show bgp evpn route-type ethernet-segment esi, show bgp evpn instance vlan, dc1-leaf2
+```
+BGP routing table information for VRF default
+Router identifier 10.0.0.2, local AS number 65000
+Route status codes: * - valid, > - active, S - Stale, E - ECMP head, e - ECMP
+                    c - Contributing to ECMP, % - Pending BGP convergence
+Origin codes: i - IGP, e - EGP, ? - incomplete
+AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Link Local Nexthop
+
+          Network                Next Hop              Metric  LocPref Weight  Path
+ * >Ec    RD: 10.0.0.1:100 auto-discovery 0 0000:2222:3333:4444:0000
+                                 10.1.0.1              -       100     0       i Or-ID: 10.0.0.1 C-LST: 10.0.1.0
+ *  ec    RD: 10.0.0.1:100 auto-discovery 0 0000:2222:3333:4444:0000
+                                 10.1.0.1              -       100     0       i Or-ID: 10.0.0.1 C-LST: 10.0.2.0
+ * >      RD: 10.0.0.2:100 auto-discovery 0 0000:2222:3333:4444:0000
+                                 -                     -       -       0       i
+ * >Ec    RD: 10.1.0.1:1 auto-discovery 0000:2222:3333:4444:0000
+                                 10.1.0.1              -       100     0       i Or-ID: 10.0.0.1 C-LST: 10.0.1.0
+ *  ec    RD: 10.1.0.1:1 auto-discovery 0000:2222:3333:4444:0000
+                                 10.1.0.1              -       100     0       i Or-ID: 10.0.0.1 C-LST: 10.0.2.0
+ * >      RD: 10.1.0.2:1 auto-discovery 0000:2222:3333:4444:0000
+                                 -                     -       -       0       i
 
 
+BGP routing table information for VRF default
+Router identifier 10.0.0.2, local AS number 65000
+Route status codes: * - valid, > - active, S - Stale, E - ECMP head, e - ECMP
+                    c - Contributing to ECMP, % - Pending BGP convergence
+Origin codes: i - IGP, e - EGP, ? - incomplete
+AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Link Local Nexthop
+
+          Network                Next Hop              Metric  LocPref Weight  Path
+ * >Ec    RD: 10.1.0.1:1 ethernet-segment 0000:2222:3333:4444:0000 10.1.0.1
+                                 10.1.0.1              -       100     0       i Or-ID: 10.0.0.1 C-LST: 10.0.1.0
+ *  ec    RD: 10.1.0.1:1 ethernet-segment 0000:2222:3333:4444:0000 10.1.0.1
+                                 10.1.0.1              -       100     0       i Or-ID: 10.0.0.1 C-LST: 10.0.2.0
+ * >      RD: 10.1.0.2:1 ethernet-segment 0000:2222:3333:4444:0000 10.1.0.2
+                                 -                     -       -       0       i
+
+dc1-leaf2#show bgp evpn instance vlan 100
+EVPN instance: VLAN 100
+  Route distinguisher: 0:0
+  Route target import: Route-Target-AS:65000:100
+  Route target export: Route-Target-AS:65000:100
+  Service interface: VLAN-based
+  Local VXLAN IP address: 10.1.0.2
+  VXLAN: enabled
+  MPLS: disabled
+  Local ethernet segment:
+    ESI: 0000:2222:3333:4444:0000
+      Interface: Port-Channel1
+      Mode: all-active
+      State: up
+      ES-Import RT: 55:55:55:55:55:55
+      DF election algorithm: modulus
+      Designated forwarder: 10.1.0.1
+      Non-Designated forwarder: 10.1.0.2
+```
+
+## Вывод команды show ip route vrf tenant1, dc1-leaf3
+```
+dc1-leaf3#show ip route vrf tenant1
+
+VRF: tenant1
+Codes: C - connected, S - static, K - kernel,
+       O - OSPF, IA - OSPF inter area, E1 - OSPF external type 1,
+       E2 - OSPF external type 2, N1 - OSPF NSSA external type 1,
+       N2 - OSPF NSSA external type2, B - Other BGP Routes,
+       B I - iBGP, B E - eBGP, R - RIP, I L1 - IS-IS level 1,
+       I L2 - IS-IS level 2, O3 - OSPFv3, A B - BGP Aggregate,
+       A O - OSPF Summary, NG - Nexthop Group Static Route,
+       V - VXLAN Control Service, M - Martian,
+       DH - DHCP client installed default route,
+       DP - Dynamic Policy Route, L - VRF Leaked,
+       G  - gRIBI, RC - Route Cache Route
+
+Gateway of last resort is not set
+
+ C        10.4.70.0/24 is directly connected, Vlan70
+ B I      10.4.100.21/32 [200/0] via VTEP 10.1.0.1 VNI 10000 router-mac 50:00:00:15:f4:e8 local-interface Vxlan1
+                                 via VTEP 10.1.0.2 VNI 10000 router-mac 50:00:00:72:8b:31 local-interface Vxlan1
+ C        10.4.100.0/24 is directly connected, Vlan100
+```
