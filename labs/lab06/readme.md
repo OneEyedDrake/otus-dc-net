@@ -519,3 +519,67 @@ Gateway of last resort is not set
                                  via VTEP 10.1.0.2 VNI 10000 router-mac 50:00:00:72:8b:31 local-interface Vxlan1
  C        10.4.100.0/24 is directly connected, Vlan100
 ```
+### **Проверка доcтупности узлов**
+---
+## node1 to host4
+```
+node1#ping 10.4.70.13
+PING 10.4.70.13 (10.4.70.13) 72(100) bytes of data.
+80 bytes from 10.4.70.13: icmp_seq=1 ttl=62 time=120 ms
+80 bytes from 10.4.70.13: icmp_seq=2 ttl=62 time=192 ms
+80 bytes from 10.4.70.13: icmp_seq=3 ttl=62 time=198 ms
+80 bytes from 10.4.70.13: icmp_seq=4 ttl=62 time=193 ms
+80 bytes from 10.4.70.13: icmp_seq=5 ttl=62 time=188 ms
+
+
+```
+## node1 to host3
+```
+node1#ping 10.4.100.13
+PING 10.4.100.13 (10.4.100.13) 72(100) bytes of data.
+80 bytes from 10.4.100.13: icmp_seq=1 ttl=64 time=259 ms
+80 bytes from 10.4.100.13: icmp_seq=2 ttl=64 time=244 ms
+80 bytes from 10.4.100.13: icmp_seq=3 ttl=64 time=243 ms
+80 bytes from 10.4.100.13: icmp_seq=4 ttl=64 time=275 ms
+80 bytes from 10.4.100.13: icmp_seq=5 ttl=64 time=294 ms
+
+
+```
+## host4 to node1
+
+```
+VPCS> ping 10.4.100.21
+
+84 bytes from 10.4.100.21 icmp_seq=1 ttl=62 time=102.622 ms
+84 bytes from 10.4.100.21 icmp_seq=2 ttl=62 time=64.213 ms
+84 bytes from 10.4.100.21 icmp_seq=3 ttl=62 time=82.767 ms
+84 bytes from 10.4.100.21 icmp_seq=4 ttl=62 time=75.940 ms
+84 bytes from 10.4.100.21 icmp_seq=5 ttl=62 time=62.414 ms
+
+```
+
+## Вывод команды show ip route vrf tenant1, dc1-leaf3 в случае отключения интерфейса eth1 на устройсве node1
+*Из таблицы маршрутизации видно, что пропал маршрут до node1 через leaf1*
+
+```
+dc1-leaf3#show ip route vrf tenant1
+
+VRF: tenant1
+Codes: C - connected, S - static, K - kernel,
+       O - OSPF, IA - OSPF inter area, E1 - OSPF external type 1,
+       E2 - OSPF external type 2, N1 - OSPF NSSA external type 1,
+       N2 - OSPF NSSA external type2, B - Other BGP Routes,
+       B I - iBGP, B E - eBGP, R - RIP, I L1 - IS-IS level 1,
+       I L2 - IS-IS level 2, O3 - OSPFv3, A B - BGP Aggregate,
+       A O - OSPF Summary, NG - Nexthop Group Static Route,
+       V - VXLAN Control Service, M - Martian,
+       DH - DHCP client installed default route,
+       DP - Dynamic Policy Route, L - VRF Leaked,
+       G  - gRIBI, RC - Route Cache Route
+
+Gateway of last resort is not set
+
+ C        10.4.70.0/24 is directly connected, Vlan70
+ B I      10.4.100.21/32 [200/0] via VTEP 10.1.0.2 VNI 10000 router-mac 50:00:00:72:8b:31 local-interface Vxlan1
+ C        10.4.100.0/24 is directly connected, Vlan100
+```
