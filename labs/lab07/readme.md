@@ -11,12 +11,73 @@
 *Настройка L2 VNI:*
 1. Создадим *vlan 10,20*, для дальнешего подключения к vxlan (VLAN-based VXLAN);
 2. Добавим порты в который подключены хосты в *vlan 10,20*, **switchport access vlan 10** **switchport access vlan 20**
-11. Сделаем мапинг VLAN к VXLAN **vxlan vlan 10 vni 10** **vxlan vlan 20 vni 20** в настрйоках **interface Vxlan1**
-12. Внесем дополнительные настройки в BGP для передачи информации о vxlan:
+3. Сделаем мапинг VLAN к VXLAN **vxlan vlan 10 vni 10** **vxlan vlan 20 vni 20** в настрйоках **interface Vxlan1**
+4. Внесем дополнительные настройки в BGP для передачи информации о vxlan:
     - Route Distinquishers **rd auto** будет сформирован автоматически;
     - Route-target **route-target both 65000:10**(для vlan10) **route-target both 65000:20**(для vlan 20) должен совпадать на всех leaf для этого **vxlan**
     - Включить изучение mac в overlay, для данного *vxlan* **redistribute learned**
-*Настройка L3 VNI:*
+*Настройка L3 VNI и настройка соседства с AS65535:*
+ 1. создадим VRF инстанс **vrf instance *tenant2***в котором будут расположены клиенты;
+   
+ 2. включим маршрутизацию в **vrf *tenant2***, командой **ip routing vrf tenant2**
+   
+ 3. создадим SVI для VLAN 10 и 20 соотвественно
+   
+ 4. добавим их в **vrf *tenant2***
+   
+ 5. настроим им вирутальные адреса (anycast gateway)  командой **ip address virtual** 10.4.10.1/24 и 10.4.20.1/24 (на каждом leaf адрес будет одинаковый)
+
+ 6.сделаем vxlan vni необходимый для работы симметирчной маршрутизации в vxlan **vxlan vrf tenant2 vni 10001**
+       
+ 6.1 Настроим BGP для передачи машрутной информации в **vrf *tenant2***:
+   
+        - Route Distinquishers **rd 10.0.0.1:10001** будет уникальный для каждого leaf;
+   
+        - Route-target на импорт и экспорт маршрутов для L3 VNI **route-target import evpn 65000:10001** **route-target export evpn 65000:10001** должен совпадать на всех leaf для этого **vxlan**
+   
+        - Включить **redistribute connected** для передачи маршрутной информации о подключенных подсетях;
+        
+        - на **leaf2** добавим neighbor 172.16.1.3 peer group border(для vrf tenant1) neighbor 172.16.2.3 peer group border(для vrf tenant2) для построения соседства с маршрутизатором **border**
+
+        - настройки для bgp(ликинг между vrf): 
+            -   neighbor border peer group
+            -   neighbor border remote-as 65535
+            -    neighbor border timers 3 9
+            
+6.2 Только на **leaf 2** cоздадим два vlan 1100 и 1200 и SVI с аналогчичными номерами для построения соседства через *border*
+6.3. На SVI добавим адреса и поместим каждый в свой VRF. *SVI 1100 172.16.1.2/29 vrf tenant1*  и *SVI 1200 172.16.2.2/29 vrf tenant2* 
+6.3 Интерфейс eth5 переведем в режим trunk и разрешим только хождение vlan с тегами 1100 и 1200;
+
+Настройка border:
+1. Cоздадим два vlan 1100 и 1200 и SVI с аналогчичными номерами для построения соседства через *border*
+2. На SVI добавим адреса *SVI 1100 172.16.1.3/29* и *SVI 1200 172.16.2.3/29*
+3. Интерфейс eth2 переведем в режим trunk и разрешим только хождение vlan с тегами 1100 и 1200;
+4. Произведем настройку BGP:
+1. Заранее создадим route-map для перезаписи AS, т.к. в BGP маршруты переданыне не могут быть получены в одной и той же AS. А VRF tenant1 и tenant2 находся в AS65000. 
+2. Включить процесс **BGP**
+3. Выполнить команду router-id *адрес loopback1*;
+4. Cделаем настройки peer group аналогичные **leaf2**
+```
+neighbor tenant1,tenant2 peer group
+   neighbor tenant1 peer group
+   neighbor tenant1 remote-as 65000
+   neighbor tenant1 timers 3 9
+   neighbor tenant2 peer group
+   neighbor tenant2 remote-as 65000
+   neighbor tenant2 timers 3 9
+```
+5. В явном виде укажем в конфигурации соседей **leaf2**
+```
+   neighbor 172.16.1.2 peer group tenant1
+   neighbor 172.16.2.2 peer group tenant2
+```
+6. Перезапишим номер AS на локальный:
+```
+    neighbor tenant1 route-map as-override out
+    neighbor tenant2 route-map as-override out
+```
+Все готово,можно проверять доступноть между хостами из разных **VRF**. 
+
 
 
 
