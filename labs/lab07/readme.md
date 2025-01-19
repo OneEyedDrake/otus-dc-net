@@ -516,7 +516,7 @@ end
                                  -                     -       -       0       i
  * >      RD: 10.0.0.2:10001 ip-prefix 172.16.2.0/29
 
-```
+
 
 dc1-leaf2#show ip route vr tenant1
 
@@ -564,8 +564,10 @@ Gateway of last resort is not set
  B E      10.4.100.11/32 [200/0] via 172.16.2.3, Vlan1200
  B E      10.4.100.0/24 [200/0] via 172.16.2.3, Vlan1200
  C        172.16.2.0/29 is directly connected, Vlan1200
+```
 
 ## Вывод команд show bgp evpn route-type ip-prefix, show ip route bgp, border
+```
 border#show ip route bgp
 
 VRF: default
@@ -585,7 +587,7 @@ Codes: C - connected, S - static, K - kernel,
  B E      10.4.20.0/24 [200/0] via 172.16.2.2, Vlan1200
  B E      10.4.100.0/24 [200/0] via 172.16.1.2, Vlan1100
 
-
+```
 
 ### **Проверка доcтупности узлов**
 ---
