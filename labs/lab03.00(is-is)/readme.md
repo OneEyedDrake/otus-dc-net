@@ -23,22 +23,22 @@
 
 **Таблица 1 Loopback интерфейсов**
   
-![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab02/addres%20loopback.png)
+![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab03.00(is-is)/addres%20loopback.png)
 
 **Таблица 2 *IP адресов* ptp интерейсов leaf и spine**
 
-![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab02/ptp%20network.png)
+![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab03.00(is-is)/ptp%20network.png)
 
 **Таблица 3 подсетей хостовых машин**
 
-![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab02/host-network.png)
+![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab03.00(is-is)/host-network.png)
 
-### **Cхема с адресацией и указанием зоны OSPF**
+### **Cхема с адресацией и указанием зоны IS-IS**
 
-![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab02/draw.io.png)
+![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab03.00(is-is)/draw.io.png)
 
 ### **Cхема eve-ng стенда**
-![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab02/eve-ng-scheme.png)
+![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/lab03.00(is-is)/eve-ng-scheme.png)
 
 ## Конфигурация OSPF dc1-spine1
 
