@@ -43,198 +43,349 @@
 ## Конфигурация OSPF dc1-spine1
 
 ```
-router ospf 1
-   router-id 10.0.1.0
-   passive-interface default
-   no passive-interface Ethernet1
-   no passive-interface Ethernet2
-   no passive-interface Ethernet3
-   max-lsa 12000
-
+hostname dc1-spine1
+!
+spanning-tree mode mstp
+!
 interface Ethernet1
    description to_dc1-leaf1
    no switchport
    ip address 10.2.1.0/31
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.0
+   isis enable spine1
+   isis network point-to-point
 !
 interface Ethernet2
    description to_dc1-leaf2
    no switchport
    ip address 10.2.1.2/31
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.0
+   isis enable spine1
+   isis network point-to-point
 !
 interface Ethernet3
    description to_dc1-leaf3
    no switchport
    ip address 10.2.1.4/31
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.0
+   isis enable spine1
+   isis network point-to-point
+!
+interface Ethernet4
+!
+interface Ethernet5
+!
+interface Ethernet6
+!
+interface Ethernet7
+!
+interface Ethernet8
 !
 interface Loopback1
    ip address 10.0.1.0/32
-   ip ospf area 0.0.0.0
+   isis enable spine1
+!
+interface Loopback2
+   ip address 10.1.1.0/32
+   isis enable spine1
+!
+interface Management1
+!
+ip routing
+!
+router isis spine1
+   net 49.0001.0100.0000.1000.00
+   router-id ipv4 10.0.1.0
+   is-type level-2
+   authentication mode md5
+   authentication key 7 /Beytnuj8KSjk59dyO0v4w==
+   !
+   address-family ipv4 unicast
+!
+end
 ```
 
 ## Конфигурация OSPF dc1-spine2
 
 ```
-router ospf 1
-   router-id 10.0.2.0
-   passive-interface default
-   no passive-interface Ethernet1
-   no passive-interface Ethernet2
-   no passive-interface Ethernet3
-   max-lsa 12000
+hostname dc1-spine2
+!
+spanning-tree mode mstp
+!
 interface Ethernet1
    description to_dc1-leaf1
    no switchport
    ip address 10.2.2.0/31
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.0
+   isis enable spine2
+   isis network point-to-point
 !
 interface Ethernet2
    description to_dc1-leaf2
    no switchport
    ip address 10.2.2.2/31
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.0
+   isis enable spine2
+   isis network point-to-point
 !
 interface Ethernet3
    description to_dc1-leaf3
    no switchport
    ip address 10.2.2.4/31
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.0
+   isis enable spine2
+   isis network point-to-point
+!
+interface Ethernet4
+!
+interface Ethernet5
+!
+interface Ethernet6
+!
+interface Ethernet7
+!
+interface Ethernet8
 !
 interface Loopback1
    ip address 10.0.2.0/32
-   ip ospf area 0.0.0.0
+   isis enable spine2
+!
+interface Loopback2
+   ip address 10.1.2.0/32
+   isis enable spine2
+!
+interface Management1
+!
+ip routing
+!
+router isis spine2
+   net 49.0001.0100.0000.2000.00
+   router-id ipv4 10.0.2.0
+   authentication mode md5
+   authentication key 7 RyBQ5L1LcNK2FQY7BaOXIA==
+   !
+   address-family ipv4 unicast
+!
+end
 ```
 ## Конфигурация OSPF dc1-leaf1
 ```
-router ospf 1
-   router-id 10.0.0.1
-   passive-interface default
-   no passive-interface Ethernet1
-   no passive-interface Ethernet2
-   max-lsa 12000
+hostname dc1-leaf1
+!
+spanning-tree mode mstp
+!
+vlan 10
+   name cli
 !
 interface Ethernet1
    description to_dc1-spine1
    no switchport
    ip address 10.2.1.1/31
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.0
+   isis enable leaf1
+   isis network point-to-point
 !
 interface Ethernet2
    description to_dc1-spine2
    no switchport
    ip address 10.2.2.1/31
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.0
+   isis enable leaf1
+   isis network point-to-point
 !
+interface Ethernet3
+!
+interface Ethernet4
+!
+interface Ethernet5
+!
+interface Ethernet6
+!
+interface Ethernet7
+!
+interface Ethernet8
+   switchport access vlan 10
 !
 interface Loopback1
    ip address 10.0.0.1/32
-   ip ospf area 0.0.0.0
+   isis enable leaf1
+!
+interface Loopback2
+   ip address 10.1.0.1/32
+   isis enable leaf1
+!
+interface Management1
 !
 interface Vlan10
    ip address 10.4.1.1/24
-   dhcp server ipv4
-   ip ospf area 0.0.0.0
+   isis enable leaf1
+!
+ip routing
+!
+router isis leaf1
+   net 49.0001.0100.0200.1001.00
+   router-id ipv4 10.0.0.1
+   is-type level-2
+   authentication mode md5
+   authentication key 7 GNzsn4SnrcllcDnRQiQRQw==
+   !
+   address-family ipv4 unicast
+!
+end
+
 ```
 ## Конфигурация OSPF dc1-leaf2
 ```
-router ospf 1
-   router-id 10.0.0.2
-   passive-interface default
-   no passive-interface Ethernet1
-   no passive-interface Ethernet2
-   max-lsa 12000
+hostname dc1-leaf2
+!
+spanning-tree mode mstp
+!
+vlan 20
+   name cli
 !
 interface Ethernet1
    description to_dc1-spine1
    no switchport
    ip address 10.2.1.3/31
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.0
+   isis enable leaf2
+   isis network point-to-point
 !
 interface Ethernet2
    description to_dc1-spine2
    no switchport
    ip address 10.2.2.3/31
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.0
+   isis enable leaf2
+   isis network point-to-point
+!
+interface Ethernet3
+!
+interface Ethernet4
+!
+interface Ethernet5
+!
+interface Ethernet6
+!
+interface Ethernet7
+!
+interface Ethernet8
+   switchport access vlan 20
 !
 interface Loopback1
    ip address 10.0.0.2/32
-   ip ospf area 0.0.0.0
+   isis enable leaf2
+!
+interface Loopback2
+   ip address 10.1.0.2/32
+   isis enable leaf2
+!
+interface Management1
 !
 interface Vlan20
-   description esxi-host
    ip address 10.4.2.1/24
-   dhcp server ipv4
-   ip ospf area 0.0.0.0
+   isis enable leaf2
+!
+ip routing
+!
+router isis leaf2
+   net 49.0001.0100.0200.1002.00
+   router-id ipv4 10.0.0.2
+   is-type level-2
+   authentication mode md5
+   authentication key 7 lc/p9Jp732vdBZ9MX/NaRQ==
+   !
+   address-family ipv4 unicast
+!
+
 ```
 ## Конфигурация OSPF dc1-leaf3
 ```
-router ospf 1
-   router-id 10.0.0.3
-   passive-interface default
-   no passive-interface Ethernet1
-   no passive-interface Ethernet2
-   max-lsa 12000
+hostname dc1-leaf3
+!
+spanning-tree mode mstp
+!
+vlan 30
+   name cli
+!
 interface Ethernet1
    description to_dc1-spine1
    no switchport
    ip address 10.2.1.5/31
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.0
+   isis enable leaf3
+   isis network point-to-point
 !
 interface Ethernet2
    description to_dc1-spine2
    no switchport
    ip address 10.2.2.5/31
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.0
+   isis enable leaf3
+   isis network point-to-point
+!
+interface Ethernet3
+!
+interface Ethernet4
+!
+interface Ethernet5
+!
+interface Ethernet6
+!
+interface Ethernet7
+   switchport access vlan 30
+!
+interface Ethernet8
+   switchport access vlan 30
 !
 interface Loopback1
    ip address 10.0.0.3/32
-   ip ospf area 0.0.0.0
+   isis enable leaf3
+!
+interface Loopback2
+   ip address 10.1.0.3/32
+   isis enable leaf3
+!
+interface Management1
 !
 interface Vlan30
-   description esxi-host
    ip address 10.4.3.1/24
-   dhcp server ipv4
-   ip ospf area 0.0.0.0
-```
-## Вывод команд show ip ospf neighbor и show ip ospf database dc1-spine1
-```
-dc1-spine1#show ip ospf neighbor
-Neighbor ID     Instance VRF      Pri State                  Dead Time   Address         Interface
-10.0.0.1        1        default  0   FULL                   00:00:33    10.2.1.1        Ethernet1
-10.0.0.2        1        default  0   FULL                   00:00:34    10.2.1.3        Ethernet2
-10.0.0.3        1        default  0   FULL                   00:00:36    10.2.1.5        Ethernet3
-dc1-spine1#
-dc1-spine1#show ip ospf database
+   isis enable leaf3
+!
+ip routing
+!
+router isis leaf3
+   net 49.0001.0100.0200.1003.00
+   router-id ipv4 10.0.0.3
+   is-type level-2
+   authentication mode md5
+   authentication key 7 lc/p9Jp732vdBZ9MX/NaRQ==
+   !
+   address-family ipv4 unicast
+!
+end
 
-            OSPF Router with ID(10.0.1.0) (Instance ID 1) (VRF default)
-
-
-                 Router Link States (Area 0.0.0.0)
-
-Link ID         ADV Router      Age         Seq#         Checksum Link count
-10.0.0.1        10.0.0.1        820         0x80000011   0x3fdd   6
-10.0.2.0        10.0.2.0        412         0x8000000b   0xf5ec   7
-10.0.0.2        10.0.0.2        485         0x8000000b   0xab6b   6
-10.0.0.3        10.0.0.3        96          0x8000000a   0xefd    6
-10.0.1.0        10.0.1.0        436         0x80000012   0x875d   7
 ```
-## Вывод команды show ip ospf neighbor и show ip ospf database dc1-spine1
+## Вывод команд show isis neighbor и show isis database, show isis hostname, show ip route isis на dc1-spine1
 ```
-dc1-spine1#show ip route ospf
+dc1-spine1#show isis neighbors
+
+Instance  VRF      System Id        Type Interface          SNPA              State Hold time   Circuit Id
+spine1    default  dc1-leaf1        L2   Ethernet1          P2P               UP    25          0F
+spine1    default  dc1-leaf2        L2   Ethernet2          P2P               UP    24          0F
+spine1    default  dc1-leaf3        L2   Ethernet3          P2P               UP    30          0F
+
+
+dc1-spine1#show isis database
+
+IS-IS Instance: spine1 VRF: default
+  IS-IS Level 2 Link State Database
+    LSPID                   Seq Num  Cksum  Life Length IS Flags
+    dc1-spine1.00-00              8  46719   589    182 L2 <>
+    dc1-spine2.00-00              7  14807   880    182 L2 <>
+    dc1-leaf1.00-00               8  20973   968    169 L2 <>
+    dc1-leaf2.00-00               8  42155   773    169 L2 <>
+    dc1-leaf3.00-00               7  22135   528    169 L2 <>
+
+dc1-spine1#show isis hostname
+
+IS-IS Instance: spine1 VRF: default
+Level  System ID           Hostname
+L2     0100.0000.1000      dc1-spine1
+L2     0100.0000.2000      dc1-spine2
+L2     0100.0200.1001      dc1-leaf1
+L2     0100.0200.1002      dc1-leaf2
+L2     0100.0200.1003      dc1-leaf3
+
+dc1-spine1#sh ip route isis
 
 VRF: default
 Codes: C - connected, S - static, K - kernel,
@@ -249,44 +400,57 @@ Codes: C - connected, S - static, K - kernel,
        DP - Dynamic Policy Route, L - VRF Leaked,
        G  - gRIBI, RC - Route Cache Route
 
- O        10.0.0.1/32 [110/20] via 10.2.1.1, Ethernet1
- O        10.0.0.2/32 [110/20] via 10.2.1.3, Ethernet2
- O        10.0.0.3/32 [110/20] via 10.2.1.5, Ethernet3
- O        10.0.2.0/32 [110/30] via 10.2.1.1, Ethernet1
+ I L2     10.0.0.1/32 [115/20] via 10.2.1.1, Ethernet1
+ I L2     10.0.0.2/32 [115/20] via 10.2.1.3, Ethernet2
+ I L2     10.0.0.3/32 [115/20] via 10.2.1.5, Ethernet3
+ I L2     10.0.2.0/32 [115/30] via 10.2.1.1, Ethernet1
                                via 10.2.1.3, Ethernet2
                                via 10.2.1.5, Ethernet3
- O        10.2.2.0/31 [110/20] via 10.2.1.1, Ethernet1
- O        10.2.2.2/31 [110/20] via 10.2.1.3, Ethernet2
- O        10.2.2.4/31 [110/20] via 10.2.1.5, Ethernet3
- O        10.4.1.0/24 [110/20] via 10.2.1.1, Ethernet1
- O        10.4.2.0/24 [110/20] via 10.2.1.3, Ethernet2
- O        10.4.3.0/24 [110/20] via 10.2.1.5, Ethernet3
+ I L2     10.1.0.1/32 [115/20] via 10.2.1.1, Ethernet1
+ I L2     10.1.0.2/32 [115/20] via 10.2.1.3, Ethernet2
+ I L2     10.1.0.3/32 [115/20] via 10.2.1.5, Ethernet3
+ I L2     10.1.2.0/32 [115/30] via 10.2.1.1, Ethernet1
+                               via 10.2.1.3, Ethernet2
+                               via 10.2.1.5, Ethernet3
+ I L2     10.2.2.0/31 [115/20] via 10.2.1.1, Ethernet1
+ I L2     10.2.2.2/31 [115/20] via 10.2.1.3, Ethernet2
+ I L2     10.2.2.4/31 [115/20] via 10.2.1.5, Ethernet3
+ I L2     10.4.1.0/24 [115/20] via 10.2.1.1, Ethernet1
+ I L2     10.4.2.0/24 [115/20] via 10.2.1.3, Ethernet2
+ I L2     10.4.3.0/24 [115/20] via 10.2.1.5, Ethernet3
+
+
 ```
-
-## Вывод команд show ip ospf neighbor и show ip ospf database dc1-leaf3
+## Вывод команд show isis neighbor и show isis database, show isis hostname, show ip route isis на dc1-leaf3
 ```
-dc1-leaf3#show ip ospf neighbor
-Neighbor ID     Instance VRF      Pri State                  Dead Time   Address         Interface
-10.0.1.0        1        default  0   FULL                   00:00:33    10.2.1.4        Ethernet1
-10.0.2.0        1        default  0   FULL                   00:00:34    10.2.2.4        Ethernet2
-dc1-leaf3#show ip ospf database
+dc1-leaf3#show isis neighbors
 
-            OSPF Router with ID(10.0.0.3) (Instance ID 1) (VRF default)
+Instance  VRF      System Id        Type Interface          SNPA              State Hold time   Circuit Id
+leaf3     default  dc1-spine1       L2   Ethernet1          P2P               UP    24          11
+leaf3     default  dc1-spine2       L2   Ethernet2          P2P               UP    25          11
 
+dc1-leaf3#show isis database
 
-                 Router Link States (Area 0.0.0.0)
+IS-IS Instance: leaf3 VRF: default
+  IS-IS Level 2 Link State Database
+    LSPID                   Seq Num  Cksum  Life Length IS Flags
+    dc1-spine1.00-00              9  65184  1149    182 L2 <>
+    dc1-spine2.00-00              7  14807   662    182 L2 <>
+    dc1-leaf1.00-00               8  20973   751    169 L2 <>
+    dc1-leaf2.00-00               8  42155   556    169 L2 <>
+    dc1-leaf3.00-00               8  49496  1169    169 L2 <>
 
-Link ID         ADV Router      Age         Seq#         Checksum Link count
-10.0.1.0        10.0.1.0        491         0x80000012   0x875d   7
-10.0.2.0        10.0.2.0        466         0x8000000b   0xf5ec   7
-10.0.0.2        10.0.0.2        540         0x8000000b   0xab6b   6
-10.0.0.1        10.0.0.1        876         0x80000011   0x3fdd   6
-10.0.0.3        10.0.0.3        150         0x8000000a   0xefd    6
-```
+dc1-leaf3#show isis hostname
 
-## Вывод команды show ip ospf neighbor и show ip ospf database dc1-leaf3
-```
-dc1-leaf3#show ip route ospf
+IS-IS Instance: leaf3 VRF: default
+Level  System ID           Hostname
+L2     0100.0000.1000      dc1-spine1
+L2     0100.0000.2000      dc1-spine2
+L2     0100.0200.1001      dc1-leaf1
+L2     0100.0200.1002      dc1-leaf2
+L2     0100.0200.1003      dc1-leaf3
+
+dc1-leaf3#show ip route isis
 
 VRF: default
 Codes: C - connected, S - static, K - kernel,
@@ -301,20 +465,28 @@ Codes: C - connected, S - static, K - kernel,
        DP - Dynamic Policy Route, L - VRF Leaked,
        G  - gRIBI, RC - Route Cache Route
 
- O        10.0.0.1/32 [110/30] via 10.2.1.4, Ethernet1
+ I L2     10.0.0.1/32 [115/30] via 10.2.1.4, Ethernet1
                                via 10.2.2.4, Ethernet2
- O        10.0.0.2/32 [110/30] via 10.2.1.4, Ethernet1
+ I L2     10.0.0.2/32 [115/30] via 10.2.1.4, Ethernet1
                                via 10.2.2.4, Ethernet2
- O        10.0.1.0/32 [110/20] via 10.2.1.4, Ethernet1
- O        10.0.2.0/32 [110/20] via 10.2.2.4, Ethernet2
- O        10.2.1.0/31 [110/20] via 10.2.1.4, Ethernet1
- O        10.2.1.2/31 [110/20] via 10.2.1.4, Ethernet1
- O        10.2.2.0/31 [110/20] via 10.2.2.4, Ethernet2
- O        10.2.2.2/31 [110/20] via 10.2.2.4, Ethernet2
- O        10.4.1.0/24 [110/30] via 10.2.1.4, Ethernet1
+ I L2     10.0.1.0/32 [115/20] via 10.2.1.4, Ethernet1
+ I L2     10.0.2.0/32 [115/20] via 10.2.2.4, Ethernet2
+ I L2     10.1.0.1/32 [115/30] via 10.2.1.4, Ethernet1
                                via 10.2.2.4, Ethernet2
- O        10.4.2.0/24 [110/30] via 10.2.1.4, Ethernet1
+ I L2     10.1.0.2/32 [115/30] via 10.2.1.4, Ethernet1
                                via 10.2.2.4, Ethernet2
+ I L2     10.1.1.0/32 [115/20] via 10.2.1.4, Ethernet1
+ I L2     10.1.2.0/32 [115/20] via 10.2.2.4, Ethernet2
+ I L2     10.2.1.0/31 [115/20] via 10.2.1.4, Ethernet1
+ I L2     10.2.1.2/31 [115/20] via 10.2.1.4, Ethernet1
+ I L2     10.2.2.0/31 [115/20] via 10.2.2.4, Ethernet2
+ I L2     10.2.2.2/31 [115/20] via 10.2.2.4, Ethernet2
+ I L2     10.4.1.0/24 [115/30] via 10.2.1.4, Ethernet1
+                               via 10.2.2.4, Ethernet2
+ I L2     10.4.2.0/24 [115/30] via 10.2.1.4, Ethernet1
+                               via 10.2.2.4, Ethernet2
+
+
 ```
 
 ### **Проверка доcтупности узлов**
