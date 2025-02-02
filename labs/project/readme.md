@@ -59,3 +59,6 @@
 **Таблица 4 адреса хостовых машин**
 
 ![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/project/scheme/eve-ng/address%20hosts.png)
+
+### **Cхема EVE-NG**
+![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/project/scheme/eve-ng/eve-ng-main.png)
