@@ -7,14 +7,14 @@
 # **Используемые технологии:**
 **VxLAN, EVPN, BGP, MLAG, LACP, OSPF, ESI LAG**
 
-### **Cхема, до перехода на VxLAN EVPN с Firewall **
+### Cхема до перехода на VxLAN EVPN с Firewall 
 
 ![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/project/scheme/Scheme%20do1.png)
 
-### **Cхема, "промежуточная" до полного перехода на VxLAN EVPN с Firewall **
+### Cхема "промежуточная" до полного перехода на VxLAN EVPN с Firewall
 
 ![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/project/scheme/Scheme%20after1.png)
 
-### **Cхема, итоговая все сервисы ходят через фабрику VxLAN EVPN с фильтрацией трафика на Firewall **
+### Cхема итоговая все сервисы ходят через фабрику VxLAN EVPN с фильтрацией трафика на Firewall
 
 ![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/project/scheme/scheme%20final1.png)
