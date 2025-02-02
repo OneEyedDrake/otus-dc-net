@@ -1,1 +1,121 @@
+dc1-spine1#sh run
+! Command: show running-config
+! device: dc1-spine1 (vEOS-lab, EOS-4.29.2F)
+!
+! boot system flash:/vEOS-lab.swi
+!
+no aaa root
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model multi-agent
+!
+hostname dc1-spine1
+!
+spanning-tree mode mstp
+!
+interface Ethernet1
+   description to_dc1-leaf1
+   mtu 9000
+   no switchport
+   ip address 10.2.1.0/31
+   ip ospf network point-to-point
+   ip ospf authentication
+   ip ospf authentication-key 7 qCTcuwOSntAmLZaW2QjKcA==
+   ip ospf area 0.0.0.0
+!
+interface Ethernet2
+   description to_dc1-leaf2
+   mtu 9000
+   no switchport
+   ip address 10.2.1.2/31
+   ip ospf network point-to-point
+   ip ospf authentication
+   ip ospf authentication-key 7 00H3ZtaDUH5hywwPkCp3ug==
+   ip ospf area 0.0.0.0
+!
+interface Ethernet3
+   description to_dc1-leaf3
+   mtu 9000
+   no switchport
+   ip address 10.2.1.4/31
+   ip ospf network point-to-point
+   ip ospf authentication
+   ip ospf authentication-key 7 00H3ZtaDUH5hywwPkCp3ug==
+   ip ospf area 0.0.0.0
+!
+interface Ethernet4
+   description dc-leaf4
+   mtu 9000
+   no switchport
+   ip address 10.2.1.6/31
+   ip ospf network point-to-point
+   ip ospf authentication
+   ip ospf authentication-key 7 3+M9bCt34HIZqkjDZpo5Nw==
+   ip ospf area 0.0.0.0
+!
+interface Ethernet5
+   mtu 9000
+!
+interface Ethernet6
+   mtu 9000
+!
+interface Ethernet7
+   description to-dc-leaf-border1
+   mtu 9000
+   no switchport
+   ip address 10.2.1.252/31
+   ip ospf network point-to-point
+   ip ospf authentication
+   ip ospf authentication-key 7 vspdQddcrpeL9OkMsq47PA==
+   ip ospf area 0.0.0.0
+!
+interface Ethernet8
+   description to-dc-leaf-border2
+   mtu 9000
+   no switchport
+   ip address 10.2.1.254/31
+   ip ospf network point-to-point
+   ip ospf authentication
+   ip ospf authentication-key 7 rcoxAjRK3CiTW1P6EXhEkQ==
+   ip ospf area 0.0.0.0
+!
+interface Loopback1
+   ip address 10.0.1.0/32
+   ip ospf area 0.0.0.0
+!
+interface Loopback2
+   ip address 10.1.1.0/32
+   ip ospf area 0.0.0.0
+!
+interface Management1
+!
+ip routing
+!
+router bgp 65000
+   router-id 10.1.1.0
+   bgp listen range 10.1.0.0/16 peer-group overlay remote-as 65000
+   neighbor overlay peer group
+   neighbor overlay remote-as 65000
+   neighbor overlay update-source Loopback2
+   neighbor overlay route-reflector-client
+   neighbor overlay timers 3 9
+   neighbor overlay password 7 wnmhtPzjs2kcfEkfPvF3Vw==
+   neighbor overlay send-community extended
+   !
+   address-family evpn
+      neighbor overlay activate
+!
+router ospf 1
+   router-id 10.0.1.0
+   passive-interface default
+   no passive-interface Ethernet1
+   no passive-interface Ethernet2
+   no passive-interface Ethernet3
+   no passive-interface Ethernet4
+   no passive-interface Ethernet7
+   no passive-interface Ethernet8
+   max-lsa 12000
+!
+end
 
