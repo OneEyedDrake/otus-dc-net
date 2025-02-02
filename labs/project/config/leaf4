@@ -1,0 +1,145 @@
+dc-leaf4#sh run
+! Command: show running-config
+! device: dc-leaf4 (vEOS-lab, EOS-4.29.2F)
+!
+! boot system flash:/vEOS-lab.swi
+!
+no aaa root
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model multi-agent
+!
+hostname dc-leaf4
+!
+spanning-tree mode mstp
+!
+vlan 11
+   name ten1-test
+!
+vlan 111
+   name ten2-test
+!
+vrf instance tenant1
+!
+vrf instance tenant2
+!
+interface Ethernet1
+   description to_dc-spine1
+   mtu 9000
+   no switchport
+   ip address 10.2.1.7/31
+   ip ospf network point-to-point
+   ip ospf authentication
+   ip ospf authentication-key 7 qCTcuwOSntAmLZaW2QjKcA==
+   ip ospf area 0.0.0.0
+!
+interface Ethernet2
+   mtu 9000
+   no switchport
+   ip address 10.2.2.7/31
+   ip ospf network point-to-point
+   ip ospf authentication
+   ip ospf authentication-key 7 00H3ZtaDUH5hywwPkCp3ug==
+   ip ospf area 0.0.0.0
+!
+interface Ethernet3
+   mtu 9000
+!
+interface Ethernet4
+   mtu 9000
+!
+interface Ethernet5
+   mtu 9000
+!
+interface Ethernet6
+   mtu 9000
+!
+interface Ethernet7
+   description ten1-cli4
+   mtu 9000
+   switchport access vlan 11
+!
+interface Ethernet8
+   description ten2-cli4
+   mtu 9000
+   switchport access vlan 111
+!
+interface Loopback1
+   ip address 10.0.0.4/32
+   ip ospf area 0.0.0.0
+!
+interface Loopback2
+   ip address 10.1.0.4/32
+   ip ospf area 0.0.0.0
+!
+interface Management1
+!
+interface Vlan11
+   vrf tenant1
+   ip address virtual 192.168.11.1/24
+!
+interface Vlan111
+   vrf tenant2
+   ip address virtual 192.168.111.1/24
+!
+interface Vxlan1
+   vxlan source-interface Loopback2
+   vxlan udp-port 4789
+   vxlan vlan 11 vni 11
+   vxlan vlan 111 vni 111
+   vxlan vrf tenant1 vni 10001
+   vxlan vrf tenant2 vni 10002
+   vxlan learn-restrict any
+!
+ip virtual-router mac-address 00:00:00:00:00:01
+!
+ip routing
+ip routing vrf tenant1
+ip routing vrf tenant2
+!
+router bgp 65000
+   router-id 10.1.0.4
+   maximum-paths 2
+   neighbor overlay peer group
+   neighbor overlay remote-as 65000
+   neighbor overlay update-source Loopback2
+   neighbor overlay timers 3 9
+   neighbor overlay password 7 wnmhtPzjs2kcfEkfPvF3Vw==
+   neighbor overlay send-community extended
+   neighbor 10.1.1.0 peer group overlay
+   neighbor 10.1.2.0 peer group overlay
+   !
+   vlan 11
+      rd auto
+      route-target both 65000:11
+      redistribute learned
+   !
+   vlan 111
+      rd auto
+      route-target both 65000:111
+      redistribute learned
+   !
+   address-family evpn
+      neighbor overlay activate
+   !
+   vrf tenant1
+      rd 10.1.0.4:10001
+      route-target import evpn 65000:10001
+      route-target export evpn 65000:10001
+      redistribute connected
+   !
+   vrf tenant2
+      rd 10.1.0.4:10002
+      route-target import evpn 65000:10002
+      route-target export evpn 65000:10002
+      redistribute connected
+!
+router ospf 1
+   router-id 10.0.0.4
+   passive-interface default
+   no passive-interface Ethernet1
+   no passive-interface Ethernet2
+   max-lsa 12000
+!
+end
