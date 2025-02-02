@@ -1,0 +1,130 @@
+dc-fw1#sh run
+! Command: show running-config
+! device: dc-fw1 (vEOS-lab, EOS-4.29.2F)
+!
+! boot system flash:/vEOS-lab.swi
+!
+no aaa root
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model ribd
+!
+hostname dc-fw1
+!
+spanning-tree mode mstp
+no spanning-tree vlan-id 4094
+!
+vlan 10
+   name to_cli
+!
+vlan 3900
+   name ptp-border-tenant1
+!
+vlan 3901
+   name ptp-border-tenant2
+!
+vlan 4094
+   trunk group peertrunk
+!
+interface Port-Channel1
+   switchport access vlan 10
+   mlag 1
+!
+interface Port-Channel101
+   switchport trunk allowed vlan 3900-4000
+   switchport mode trunk
+!
+interface Port-Channel4094
+   switchport mode trunk
+   switchport trunk group peertrunk
+!
+interface Ethernet1
+   mtu 9000
+   channel-group 1 mode active
+!
+interface Ethernet2
+   mtu 9000
+!
+interface Ethernet3
+   mtu 9000
+   channel-group 4094 mode active
+!
+interface Ethernet4
+   mtu 9000
+   channel-group 4094 mode active
+!
+interface Ethernet5
+   mtu 9000
+!
+interface Ethernet6
+   mtu 9000
+   no switchport
+!
+interface Ethernet7
+   mtu 9000
+   switchport mode trunk
+   no switchport
+   channel-group 101 mode active
+!
+interface Ethernet8
+   mtu 9000
+   switchport mode trunk
+   channel-group 101 mode active
+!
+interface Loopback1
+!
+interface Management1
+!
+interface Vlan10
+   ip address 172.16.0.253/24
+   ip virtual-router address 172.16.0.1
+!
+interface Vlan3900
+   ip address 172.18.0.1/29
+   ip virtual-router address 172.18.0.3
+!
+interface Vlan3901
+   ip address 172.18.0.12/29
+   ip virtual-router address 172.18.0.14
+!
+interface Vlan4094
+   no autostate
+   ip address 172.17.0.1/30
+!
+ip virtual-router mac-address 00:1c:73:00:09:99
+!
+ip routing
+!
+mlag configuration
+   domain-id mlag1
+   heartbeat-interval 2500
+   local-interface Vlan4094
+   peer-address 172.17.0.2
+   peer-link Port-Channel4094
+   reload-delay 150
+!
+route-map close-nxthop-as-override permit 10
+   set as-path match all replacement auto
+   set ip next-hop 172.18.0.14
+!
+route-map open-nxthop-as-override permit 10
+   set as-path match all replacement auto
+   set ip next-hop 172.18.0.3
+!
+router bgp 65535
+   router-id 172.16.0.253
+   neighbor close-segment peer group
+   neighbor close-segment remote-as 65000
+   neighbor close-segment route-map close-nxthop-as-override out
+   neighbor close-segment password 7 Hc/icrQZbz2qnl/KPhBEkg==
+   neighbor open-segment peer group
+   neighbor open-segment remote-as 65000
+   neighbor open-segment route-map open-nxthop-as-override out
+   neighbor open-segment password 7 6ourd2bCXoTTCe0VYS46DQ==
+   neighbor 172.18.0.4 peer group open-segment
+   neighbor 172.18.0.5 peer group open-segment
+   neighbor 172.18.0.9 peer group close-segment
+   neighbor 172.18.0.10 peer group close-segment
+!
+end
