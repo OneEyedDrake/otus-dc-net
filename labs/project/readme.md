@@ -24,6 +24,8 @@
 - ESI LAG для подключения хостов виртуализации;
 - MLAG пара(border leaf) для подключения к паре Firewall Active-Passive и bypass линков к кампусной сети.
 
+
+
 ### Cхема до перехода на VxLAN EVPN с Firewall 
 
 ![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/project/scheme/Scheme%20do1.png)
@@ -35,3 +37,10 @@
 ### Cхема итоговая все сервисы ходят через фабрику VxLAN EVPN с фильтрацией трафика на Firewall
 
 ![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/project/scheme/scheme%20final1.png)
+
+# **Описание практической части:**
+- Практическая часть работы выполнялась в виртуальном стенде на базе EVE NG;
+- Схема собрана для отражения технически навыков полученных на этапе обучения, но не в полном объеме показывает план миграции;
+- В качестве пары Firewall Active-Passive, была использована Mlag пара с VIR(для маршрутизации исключетельно на VIP адресс и корректной работы Firewall, был использован roadmap с указанием ip next-hope);
+- В качестве хоста виртуализации был использован обычный маршрутизатор Arista, с настроеным LACP, на стороне leaf настроен ESI LAG.
+  
