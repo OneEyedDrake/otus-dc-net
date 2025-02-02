@@ -1,0 +1,175 @@
+dc-leaf-border1#sh run
+! Command: show running-config
+! device: dc-leaf-border1 (vEOS-lab, EOS-4.29.2F)
+!
+! boot system flash:/vEOS-lab.swi
+!
+no aaa root
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model multi-agent
+!
+hostname dc-leaf-border1
+!
+spanning-tree mode mstp
+no spanning-tree vlan-id 4094
+!
+vlan 11
+!
+vlan 3900
+   name ptp-fw1
+!
+vlan 3901
+   name ptp-fw-tenant2
+!
+vlan 4094
+   name mlag-peer
+   trunk group peertrunk
+!
+vrf instance tenant1
+!
+vrf instance tenant2
+!
+interface Port-Channel1
+   switchport access vlan 11
+   switchport trunk allowed vlan 3900-4000
+   switchport mode trunk
+   mlag 1
+!
+interface Port-Channel2
+   switchport trunk allowed vlan 3900-4000
+   switchport mode trunk
+   mlag 2
+!
+interface Port-Channel4094
+   switchport mode trunk
+   switchport trunk group peertrunk
+!
+interface Ethernet1
+   mtu 9000
+   no switchport
+   ip address 10.2.1.253/31
+   ip ospf network point-to-point
+   ip ospf authentication
+   ip ospf authentication-key 7 qCTcuwOSntAmLZaW2QjKcA==
+   ip ospf area 0.0.0.0
+!
+interface Ethernet2
+   mtu 9000
+   no switchport
+   ip address 10.2.2.253/31
+   ip ospf network point-to-point
+   ip ospf authentication
+   ip ospf authentication-key 7 00H3ZtaDUH5hywwPkCp3ug==
+   ip ospf area 0.0.0.0
+!
+interface Ethernet3
+   mtu 9000
+   channel-group 4094 mode active
+!
+interface Ethernet4
+   mtu 9000
+   channel-group 4094 mode active
+!
+interface Ethernet5
+   mtu 9000
+!
+interface Ethernet6
+   mtu 9000
+   channel-group 1 mode active
+!
+interface Ethernet7
+   mtu 9000
+   channel-group 2 mode active
+!
+interface Ethernet8
+   mtu 9000
+!
+interface Loopback0
+   ip address 1.1.1.1/32
+   ip ospf area 0.0.0.0
+!
+interface Loopback1
+   ip address 10.0.0.254/32
+   ip ospf area 0.0.0.0
+!
+interface Loopback2
+   ip address 10.1.0.254/32
+   ip ospf area 0.0.0.0
+!
+interface Management1
+!
+interface Vlan3900
+   vrf tenant1
+   ip address 172.18.0.4/29
+!
+interface Vlan3901
+   vrf tenant2
+   ip address 172.18.0.9/29
+!
+interface Vlan4094
+   no autostate
+   ip address 172.17.0.1/30
+!
+interface Vxlan1
+   vxlan source-interface Loopback0
+   vxlan udp-port 4789
+   vxlan vrf tenant1 vni 10001
+   vxlan vrf tenant2 vni 10002
+   vxlan learn-restrict any
+!
+ip routing
+ip routing vrf tenant1
+ip routing vrf tenant2
+!
+mlag configuration
+   domain-id mlag2
+   heartbeat-interval 2500
+   local-interface Vlan4094
+   peer-address 172.17.0.2
+   peer-link Port-Channel4094
+   reload-delay 150
+!
+router bgp 65000
+   router-id 10.1.0.254
+   maximum-paths 2
+   neighbor fw peer group
+   neighbor fw remote-as 65535
+   neighbor fw password 7 1GWCLK8XkEaHC8APcMrHqQ==
+   neighbor overlay peer group
+   neighbor overlay remote-as 65000
+   neighbor overlay update-source Loopback2
+   neighbor overlay timers 3 9
+   neighbor overlay password 7 wnmhtPzjs2kcfEkfPvF3Vw==
+   neighbor overlay send-community extended
+   neighbor 10.1.1.0 peer group overlay
+   neighbor 10.1.2.0 peer group overlay
+   !
+   address-family evpn
+      neighbor overlay activate
+   !
+   vrf tenant1
+      rd 10.1.0.254:10001
+      route-target import evpn 65000:10001
+      route-target export evpn 65000:10001
+      neighbor 172.18.0.1 peer group fw
+      neighbor 172.18.0.2 peer group fw
+      redistribute connected
+   !
+   vrf tenant2
+      rd 10.1.0.254:10002
+      route-target import evpn 65000:10002
+      route-target export evpn 65000:10002
+      neighbor 172.18.0.12 peer group fw
+      neighbor 172.18.0.13 peer group fw
+      redistribute connected
+!
+router ospf 1
+   router-id 10.0.0.254
+   passive-interface default
+   no passive-interface Ethernet1
+   no passive-interface Ethernet2
+   max-lsa 12000
+!
+end
