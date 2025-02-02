@@ -44,3 +44,18 @@
 - В качестве пары Firewall Active-Passive, была использована Mlag пара с VIR(для маршрутизации исключетельно на VIP адресс и корректной работы Firewall, был использован roadmap с указанием ip next-hope);
 - В качестве хоста виртуализации был использован обычный маршрутизатор Arista, с настроеным LACP, на стороне leaf настроен ESI LAG.
   
+**Таблица 1 Loopback интерфейсов**
+  
+![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/project/scheme/eve-ng/address%20loop.png)
+
+**Таблица 2 *IP адресов* ptp интерейсов spine**
+
+![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/project/scheme/eve-ng/address%20ptp-spine.png)
+
+**Таблица 3 *IP адресов* ptp интерейсов leaf**
+
+![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/project/scheme/eve-ng/address%20ptp-leaf.png)
+
+**Таблица 4 адреса хостовых машин**
+
+![](https://github.com/OneEyedDrake/otus-dc-net/blob/main/labs/project/scheme/eve-ng/address%20hosts.png)
