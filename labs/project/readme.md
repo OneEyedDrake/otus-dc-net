@@ -992,3 +992,26 @@ Gateway of last resort is not set
  B E      192.168.110.0/24 [200/0] via 172.18.0.9, Vlan3901
  B E      192.168.111.0/24 [200/0] via 172.18.0.9, Vlan3901
 ```
+
+## Проверка l2 VNI связанности ten1-cli2 и ten1-cli4
+```
+ten1-cli2> ping 192.168.11.4
+
+84 bytes from 192.168.11.4 icmp_seq=1 ttl=64 time=390.763 ms
+84 bytes from 192.168.11.4 icmp_seq=2 ttl=64 time=485.903 ms
+84 bytes from 192.168.11.4 icmp_seq=3 ttl=64 time=232.376 ms
+84 bytes from 192.168.11.4 icmp_seq=4 ttl=64 time=434.410 ms
+84 bytes from 192.168.11.4 icmp_seq=5 ttl=64 time=309.420 ms
+```
+## Проверка l3 VNI связанности ten2-host и ten2-cli2
+```
+ten2-host#ping 192.168.111.2
+PING 192.168.111.2 (192.168.111.2) 72(100) bytes of data.
+80 bytes from 192.168.111.2: icmp_seq=1 ttl=62 time=1244 ms
+80 bytes from 192.168.111.2: icmp_seq=2 ttl=62 time=1254 ms
+80 bytes from 192.168.111.2: icmp_seq=3 ttl=62 time=1488 ms
+80 bytes from 192.168.111.2: icmp_seq=4 ttl=62 time=1528 ms
+80 bytes from 192.168.111.2: icmp_seq=5 ttl=62 time=1621 ms
+```
+## Проверку VRF Tenan1 до Tenant2 (leakin) через FW1 проверить не удалось, в такой схеме(вся необходимая маршрутная информация присутсвует, но при этом узел все равно недоступен, предположительно проблемы в производительнсоти стенда, т.к. на маленькой схеме, все работало корректно).
+
